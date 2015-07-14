@@ -1,0 +1,13 @@
+a:link { color:navy; }
+a:visited { color:navy; }
+
+#content .listingblock code {
+    /* margin-left: 32px; */
+    line-height: 140%;
+    /* padding: 8px; */
+    background-color: #f7f7f7;
+    /* border: thin solid #d0d0d0; */
+    border-radius: 3px;
+    width: 780px;
+    display: block;
+}

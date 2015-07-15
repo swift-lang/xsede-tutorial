@@ -66,18 +66,18 @@ Setup the swift-tutorial
 Clone the repository from github
 
 ----
-git clone https://github.com/swift-lang/swift-tutorial.git
-cd swift-tutorial
+git clone https://github.com/swift-lang/xsede-tutorial.git
+cd xsede-tutorial
 ----
 
 Or, download the zip file from github and unpack.
 
 ----
 # Download
-wget https://github.com/swift-lang/swift-tutorial/archive/master.zip
+wget https://github.com/swift-lang/xsede-tutorial/archive/master.zip
 unzip master.zip
-mv swift-tutorial-master swift-tutorial
-cd swift-tutorial
+mv xsede-tutorial-master xsede-tutorial
+cd xsede-tutorial
 ----
 
 Now, run the tutorial setup script:
@@ -118,7 +118,7 @@ sys::[cat ../part01/p1.swift]
 To run this script, run the following command:
 
 -----
-$ cd swift-tutorial/part01
+$ cd xsede-tutorial/part01
 $ swift p1.swift
 Swift 0.96
 RunID: run001
@@ -165,7 +165,7 @@ the output files will be named
 To run the script and view the output:
 
 -----
-$ cd swift-tutorial/part02
+$ cd xsede-tutorial/part02
 $ swift p2.swift
 Swift 0.96
 RunID: run001
@@ -204,7 +204,7 @@ sys::[cat ../part03/p3.swift]
 To run:
 
 ----
-$ cd swift-tutorial/part03
+$ cd xsede-tutorial/part03
 $ swift p3.swift
 Swift 0.96
 RunID: run001
@@ -303,9 +303,9 @@ For part04:
 swift -config xsede.conf -sites stampede p4.swift
 
 
-To configure the remote site definition for a particular site, open the swift-tutorial/swift.conf file
+To configure the remote site definition for a particular site, open the xsede-tutorial/swift.conf file
 and edit the site entry for that site. For example, if you like to run the tutorial on the Midway
-cluster, edit the site.midway entry in the swift-tutorial/swift.conf file and follow the instructions
+cluster, edit the site.midway entry in the xsede-tutorial/swift.conf file and follow the instructions
 given for midway in the config file.
 
 Here is a snippet from the swift.conf for the midway cluster:
@@ -366,7 +366,7 @@ results.
 For example, to run the job remotely on Midway and to view the output:
 
 -----
-$ cd swift-tutorial/part04
+$ cd xsede-tutorial/part04
 $ swift p4.swift
 Swift 0.96
 RunID: run001
@@ -430,7 +430,7 @@ sys::[cat ../part05/p5.swift]
 To run:
 
 ----
-$ cd swift-tutorial/part05
+$ cd xsede-tutorial/part05
 $ swift p5.swift
 Swift 0.96
 RunID: run001
@@ -547,7 +547,7 @@ and on the bias file, computed and then consumed in these two dependent statemen
 To run:
 
 ----
-$ cd swift-tutorial/part06
+$ cd xsede-tutorial/part06
 $ swift p6.swift
 Swift 0.96
 RunID: run001
@@ -789,197 +789,21 @@ The following sections outline the steps required to enable swift to run tasks r
 
 Setting up ssh-keys for password-less acccess : link:http://hortonworks.com/kb/generating-ssh-keys-for-passwordless-login/[How-to-passwordless-login]
 
-Midway cluster at UChicago
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Midway cluster is a shared computational resource administered by the Research
-Computing Center at the University of Chicago. Here's documentation on the RCC resources:
-link:https://rcc.uchicago.edu/docs/[RCC docs]
-
-Here are the steps to run the tutorial on the Midway cluster:
-
-1. Ensure you have enabled ssh keys for passwordless access to the Midway login nodes.
-2. If you are running on the midway login nodes you set jobManager: "local:slurm"
-3. Set workDirectory to /tmp/your_username_on_midway
-4. Set the following line in the swift-tutorial/swift.conf file.
-
-----
-   sites: [midway]
-----
-
-
-Notes:
-
------
-# The following commands are to be executed on the Midway login node
-# Check your account and balance
-accounts balance
-
-# List queues
-qstat -q
-
-# List your jobs and state
-qstat -u $USER
------
-
-
-Beagle Supercomputer (Cray)
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The Beagle supercomputer is a Cray XE6 system at the Computation Institute.
-Here is documentation on Beagle: link:http://beagle.ci.uchicago.edu/using-beagle/[Beagle docs]
-
-Here are the steps to run the tutorial on the Beagle supercomputer:
-
-1. Ensure you have enabled ssh keys for passwordless access to the Beagle login nodes.
-2. If you are running on the beagle login nodes, set jobManager: "local:pbs"
-3. Find your project name/allocation and set jobProject : "YOUR_PROJECT_ON_BEAGLE"
-4. Set userHomeOverride : "/lustre/beagle2/YOUR_USERNAME_ON_BEAGLE/swiftwork"
-5. Set workDirectory : "/tmp/YOUR_USERNAME_ON_BEAGLE/swiftwork"
-6. Set the following line in the swift-tutorial/swift.conf file.
-+
-
-----
-   sites: [beagle]
-----
-
-Notes for beagle:
-
------
-# The following commands should be executed on a beagle login node
-# To check your allocation and project on Beagle:
-show_alloc
-
-# List queues
-qstat -q
-
-# List your jobs and state
-qstat -u $USER
-
-# Visual representation of current node allocation status
-xtnodestat -d
------
-
-Blues cluster at LCRC
-^^^^^^^^^^^^^^^^^^^^^
-
-Blues is a compute cluster at the Laboratory Computing Resource Center (LCRC) at Argonne National Laboratory.
-The blues cluster features 310 nodes, with 16 cores per node (Intel Sandybridge).
-Here's documentation on Blues: link:http://www.lcrc.anl.gov/info/Blues[Blues docs]
-
-Here are the steps to run the tutorial on the Blues cluster
-
-1. Ensure you have enabled ssh keys for passwordless access to the Blues login nodes (blues.lcrc.anl.gov).
-2. If you are ru    nning on the blues login nodes, set jobManager: "local:pbs"
-3. Set workDirectory : "/home/YOUR_USERNAME_ON_BLUES/swiftwork"
-4. Set the following line in the swift-tutorial/swift.conf file.
-+
-
-----
-   sites: [blues]
-----
-
-Notes for blues:
-
------
-# The following commands should be executed on a beagle login node
-# List queues
-qstat -q
-
-# List your jobs and state
-qstat -u $USER
------
-
-
-OSGConnect at UChicago
-^^^^^^^^^^^^^^^^^^^^^^
-
-The Open Science Grid (OSG) and University of Chicago provides a service to access a vast
-pool of opportunistic computational resources spread across the U.S. Here's documentation on the OSG Connect resources:
-link:https://confluence.grid.iu.edu/display/CON/Home[OSGConnect docs].
-
-Here are the steps to run the tutorial via OSGConnect on the Open Science Grid:
-
-1. Ensure you have enable ssh keys for passwordless access to the OSGConnect login nodes.
-2. If you are running on the OSGConnect login node set jobManager: "local:condor"
-3. Set projectname : "YOUR_PROJECTNAME_ON_OSG"
-4. Set workDirectory : "/tmp/YOUR_USERNAME_ON_OSG"
-5. Set the following line in the swift-tutorial/swift.conf file:
-+
-
-----
-   sites: [osgc]
-----
-
-
-Notes for OSGConnect :
-
------
-# The following commands should be executed on the OSGConnect login node
-# To check/select your project on OSGConnect
-connect project
-
-# List your jobs and state
-condor_q $USER
------
-
-
-Amazon EC2
-^^^^^^^^^^
-
-Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides resizable compute capacity in the cloud.
-Getting cloud resources on-demand from Amazon is now as simple as setting up an account and attaching a credit card.
-
-1. Follow steps outlined in link:./amazon_ec2.html[Amazon docs] to set up an account and install local dependencies.
-2. Set ec2CredentialsFile: "ABSOLUTE_PATH_TO_YOUR_AWS_CREDENTIALS_FILE"
-3. Ensure that ec2KeypairFile points to a valid path
-4. If you update ec2WorkerImage, ensure that it is a ubuntu image
-5. Set the following line in the swift-tutorial/swift.conf file:
-+
-
-----
-   sites: [aws]
-----
-
-WARNING: If you kill a swift-run before completion, Swift would not be able to terminate your instances. This can
-lead to instances continuing to run and costing you money. Please ensure that all swift-worker instances have
-terminated by logging into the link:https://us-west-2.console.aws.amazon.com/ec2/v2/home?region=us-west-2#Home:[EC2 dashboard]
-once you've completed the tutorial.
-
-Collection of Ad-Hoc Nodes
-^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Using this configuration scheme swift allows you to use multiple independent nodes as a pool of resources.
-Assume that you have access to N machines ( ad-hoc-1.foo.net, ad-hoc-2.foo.net ... ad-hoc-N.foo.net )
-You can replicate the site.ad-hoc-1 site definition block for each site you have access to, and swift
-will run tasks on all of them.
-
-1. Ensure you have enable ssh keys for passwordless access to the each of the ad-hoc Nodes.
-2. Replicate the site block for each ad-hoc node
-3. For each site block, set URL : URL_OF_AD_HOC_MACHINE_N
-4. Set workDirectory : "/tmp/USERNAME_ON_AD-HOC-N/work"
-+
-
-----
-   sites: [<ad-hoc-1.foo.net>, <ad-hoc-1.foo.net>, ... <ad-hoc-N.foo.net>]
-----
-
 
 Multiple sites
 ^^^^^^^^^^^^^^
 
 Swift allows you to run you applications on multiple sites that you have access to.
-Let's say you would like to run you applications on Midway and Beagle.
+Let's say you would like to run you applications on Stampede and Gordon
 
-1. Ensure you have enable ssh keys for passwordless access to the both Midway and Beagle
-2. Set the site specific variables for both sites in the swift-tutorial/setup.sh file.
-3. Set the following line in the swift-tutorial/swift.conf file:
+1. Ensure you have enable ssh keys for passwordless access to the both stampede & gordon
+2. Set the site specific variables for both sites in the xsede-tutorial/setup.sh file.
+3. Set the following line in the xsede-tutorial/swift.conf file:
 +
 
 ----
-   sites: [midway, beagle]
+   sites: [stampede, gordon]
 ----
-
 
 TACC Stampede(XSEDE)
 ^^^^^^^^^^^^^^^^^^^^
@@ -997,7 +821,7 @@ a remote system.
 1. Ensure you have enabled ssh keys for passwordless access to the Stampede login nodes (Only necessary if running from remote)
 2. If you are running on login<ID>.stampede.tacc.utexas.edu, set jobManager: "local:slurm"
 3. Set workDirectory to /tmp/your_username_on_stampede
-4. Set the following line in the swift-tutorial/swift.conf file.
+4. Set the following line in the xsede-tutorial/swift.conf file.
 +
 ----
     sites: [stampede]
@@ -1044,7 +868,7 @@ a remote system.
 1. Ensure you have enabled ssh keys for passwordless access to the Blacklight login nodes (Only necessary if running from remote)
 2. If you are running on the login nodes, set jobManager: "local:pbs"
 3. Set workDirectory to /tmp/your_username_on_blacklight
-4. Set the following line in the swift-tutorial/swift.conf file.
+4. Set the following line in the xsede-tutorial/swift.conf file.
 +
 ----
     sites: [blacklight]
@@ -1085,7 +909,7 @@ Here are the steps to run the tutorial on Gordon:
 
 1. Ensure you have enabled ssh keys for passwordless access to the Gordon login nodes
 2. Set workDirectory to /tmp/your_username_on_blacklight
-3. Set the following line in the swift-tutorial/swift.conf file.
+3. Set the following line in the xsede-tutorial/swift.conf file.
 +
 ----
     sites: [gordon]
@@ -1124,7 +948,7 @@ Here are the steps to run the tutorial on Trestles:
 
 1. Ensure you have enabled ssh keys for passwordless access to the Trestles.
 2. Set workDirectory to /tmp/your_username_on_blacklight
-3. Set the following line in the swift-tutorial/swift.conf file.
+3. Set the following line in the xsede-tutorial/swift.conf file.
 
 ----
    sites: [trestles]
@@ -1141,109 +965,3 @@ qstat -u $USER
 -----
 
 
-Edison at NERSC
-^^^^^^^^^^^^^^^
-
-Edison is NERSC's newest supercomputer, a Cray XC30, with a peak performance of 2.57
-petaflops/sec, 133,824 compute cores, 357 terabytes of memory, and 7.56 petabytes of disk.
-Here's documentation on Edison : link:https://www.nersc.gov/users/computational-systems/edison/[Edison docs]
-
-Here are the steps to run the tutorial on Edison
-
-1. Ensure you have enabled ssh keys for passwordless access to the Edison login nodes (edison.nersc.gov).
-2. If you are running on the Edison login nodes, set jobManager: "local:pbs"
-3. Set workDirectory : "/home/YOUR_USERNAME_ON_EDISON/swiftwork"
-4. Set the following line in the swift-tutorial/swift.conf file.
-+
-
-----
-   sites: [Edison]
-----
-
-Notes for Edison:
-
------
-# The following commands should be executed on the Edison login node
-# List queues
-qstat -q
-
-# List your jobs and state
-qstat -u $USER
------
-
-Config note for Edison:
-
-In order to enable rapid connection between Swift service (on login node) and worker (on compute nodes), the worker must know the network interface connecting login and compute nodes. To achieve this, worker will probe all the interface at startup. This can cause delays in completion of Swift run. To facilitate a quick connection, Swift config uses a directive called +internalHostName+ whose value is an IP address. Depending on which login node the Swift service runs, the value of this IP differs. The following table shows current mapping of IP addresses between various login nodes and compute nodes on Edison:
-
-[width="40%",frame="topbot",options="header,footer"]
-|======================
-|Login Node |IP Address
-|edison01        |128.55.72.21
-|edison02        |128.55.72.22
-|edison03        |128.55.72.23
-|edison04        |128.55.72.24
-|edison05        |128.55.72.25
-|edison06        |128.55.72.26
-|edison07        |128.55.72.27
-|edison08        |128.55.72.28
-|edison09        |128.55.72.29
-|edison10        |128.55.72.30
-|======================
-
-For instance, if you are logged in edison05, the config for a short run will look like:
-
-----
-site.edison {
- execution {
- ...
-  options {
-    ...
-    internalHostName: "128.55.72.29"
-    ...
-    jobOptions {
-     ...
-    }
-    ...
-  }
- }
- ...
- }
-}
-
-sites: edison
-...
-...
-
-----
-
-Changing you default shell on NERSC systems
-
-1. Login to the NERSC Information Management page, link:https://nim.nersc.gov[NIM]
-2. Once you've logged onto the NIM, Go to the "ACTIONS" dropdown at the top.
-3. Select "Change Shell" and update the shell to *bash* for your machines.
-4. Save, and try logging into the machines to confirm that the changes have taken effect.
-
-
-Legion at University College London
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Legion is a heterogeneous cluster linked together by a fast network at the University College London.
-Here's documentation on Edison : link:https://wiki.rc.ucl.ac.uk/wiki/Legion[Legion docs]
-
-Here are the steps to run the tutorial on Legion:
-The swift 0.96 package has been modified to work correctly with Legion. The package can
-be downloaded from here : link:http://swift-lang.org/packages/swift-0.96-sge-mod.tar.gz[Swift-0.96-sge-mod.tar.gz]
-
-1. Login to legion.rc.ucl.ac.uk
-2. The tutorial is designed to be run on the cluster from the login node.
-3. Set the following line in the swift-tutorial/swift.conf file.
-
-+
-----
-   sites: [Legion]
-----
-
-Notes for Legion:
-
-Please note that when jobs are submitted to the queue, you will see the following error message
-which can be ignored: "Error: No parallel environment specified"

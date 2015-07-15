@@ -1,0 +1,18 @@
+#!/bin/bash
+
+LOG=$HOME/ssh.log
+echo "ARGS SCP: $*"  &>> $LOG
+shift; # Avoid -p
+shift; # Avoid 22
+shift;
+unset X509_USER_PROXY
+
+if [[ $* == *stampede.tacc.xsede.org* ]]
+then
+    ARGS="-P 2222"
+fi
+
+echo $* &>> $LOG
+echo "gsiscp $ARGS $*" &>> $LOG
+gsiscp $ARGS $*
+echo "SCP================================================="&>> $LOG

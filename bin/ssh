@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#site=$*
+LOG=$HOME/ssh.log
+echo "ARGS SSH: $*" &>> $LOG
+
+if [[ $1 == "-p" ]]
+then
+    shift; # Avoid -p
+    shift; # Avoid 22
+fi
+
+if [[ $1 == "stampede.tacc.xsede.org" ]]
+then
+    ARGS="-p 2222"
+fi
+
+unset X509_USER_PROXY
+
+echo "gsissh $ARGS $*" &>> $LOG
+gsissh $ARGS $*
+echo "SSH================================================="&>> $LOG

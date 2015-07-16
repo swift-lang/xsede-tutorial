@@ -17,7 +17,6 @@ export TRESTLES_USERNAME="yadunand"
 export HOPPER_USERNAME="yadunand"
 export BLACKLIGHT_USERNAME="yadunand"
 
-if 0
 then
 for i in $(seq 1 1 3)
 do
@@ -33,7 +32,6 @@ do
     echo -e "\n\n"
     popd
 done
-fi
 
 SITES=('stampede' 'gordon' 'blacklight')
 for i in $(seq 4 1 6)

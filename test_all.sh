@@ -17,7 +17,6 @@ export TRESTLES_USERNAME="yadunand"
 export HOPPER_USERNAME="yadunand"
 export BLACKLIGHT_USERNAME="yadunand"
 
-then
 for i in $(seq 1 1 3)
 do
     pushd .

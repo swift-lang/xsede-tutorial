@@ -1,0 +1,40 @@
+#!/bin/bash
+
+if [[ "$MPI_RANKS" == "" ]]
+then
+    echo "MPI_RANKS not defined" 1>&2
+    exit -1
+fi
+
+outputfile="${@: -1}"
+
+if [[ $MACHINE == "raven" ]]
+then
+    $MPI_APP_PATH
+elif [[ $MACHINE == "swan" ]]
+then
+    echo "aprun -n $MPI_RANKS -N 1 $MPI_APP_PATH $*"
+    echo "hostname : $HOSTNAME"
+    aprun -n $MPI_RANKS -N 1 $MPI_APP_PATH $*
+    touch $outputfile
+
+elif [[ $MACHINE == "stampede" ]]
+then
+    echo "$MPI_APP_PATH $*"
+    $MPI_APP_PATH $*
+
+elif [[ $MACHINE == "blacklight" ]]
+then
+    export PATH=/usr/local/packages/ImageMagick-6.7.3-10/bin:$PATH
+    echo "mpirun -np $PBS_NCPUS $MPI_APP_PATH $*"
+    mpirun -np $PBS_NCPUS $MPI_APP_PATH $*
+
+elif [[ $MACHINE == "midway" ]]
+then
+    module load openmpi
+    mpirun -n $MPI_RANKS $MPI_APP_PATH $*
+else
+    echo "MACHINE : $MACHINE is not defined"
+fi
+
+convert $outputfile -resize 1000x1000 $outputfile

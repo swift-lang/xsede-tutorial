@@ -91,7 +91,7 @@ sys::[cat -n ../part01/p1.swift]
 
 *Line 3-6*: An app function called +simulation+ is defined which takes no input arguments and returns a value of type file. An app function is a function that is executed on target resources.
 
-*Line 5*: This single line within the app function definition composes the commandline used to invoke the application on the remote machines. *stdout* and *stderr* are keywords that can be used to redirect these output streams from the application to files defined by the user. *filename()* gets the correct path to which the *file* variable *o* maps to on the remote system. Swift manages the transfer to and from the remote system, of any variables specified in the input and output parameter list.
+*Line 5*: This single line within the app function definition composes the commandline used to invoke the application on the remote machines. +stdout+ and +stderr+ are keywords that can be used to redirect these output streams from the application to files defined by the user. +filename()+ gets the correct path to which the +file+ variable +o+ maps to on the remote system. Swift manages the transfer to and from the remote system, of any variables specified in the input and output parameter list.
 
 *Line 8*: A variable +f+ of type file is defined which maps to a file +sim.out+ on the filesystem. The angle bracket +< >+ are used to define mappings from files and directories to swift variables. For more on mappers here’s mapper http://swift-lang.org/guides/trunk/userguide/userguide.html#_mappers[reference]
 
@@ -192,21 +192,21 @@ image::part03.png[align="center"]
 sys::[cat -n ../part03/p3.swift]
 ----
 
-Line 3-6: The application simulation has been modified to accept 3 arguments which control the nature of the simulation. The app block composes the commandline invocation to be invoked on the compute resources.
+*Line 3-6*: The application +simulation+ has been modified to accept 3 arguments which control the nature of the simulation. The app block composes the commandline invocation to be invoked on the compute resources.
 
-Line 8-11: A new application analyze is defined which takes an array of files as input argument and returns a single file. When variables mapped to files are passed as input or outputs to an app, swift manages the movement(staging) of these files between where the swift script is executed and the compute resources where the applications execute.
+*Line 8-11*: A new application analyze is defined which takes an array of files as input argument and returns a single file. When variables mapped to files are passed as input or outputs to an app, swift manages the movement(staging) of these files between where the swift script is executed and the compute resources where the applications execute.
 
-Line 13-16: The arg built-in extracts commandline arguments to swift, and when none are specified the second argument is treated as the default.
+*Line 13-16*: The +arg+ built-in extracts commandline arguments to swift, and when none are specified the second argument is treated as the default.
 
-Line 18: sims is defined as an array of type files.
+*Line 18*: +sims+ is defined as an array of type files.
 
-Line 20-24: The foreach loop iterates over a list of integers [0:nsim-1] with nsim set by the commandline option -nsim, or the default 10
+*Line 20-24*: The +foreach+ loop iterates over a list of integers +[0:nsim-1]+ with +nsim+ set by the commandline option +-nsim+, or the default 10
 
-Line 23: The results from each invocation of the app simulation are copied from a temporary variable into the array sims[] indexed by the foreach loop index i.
+*Line 23*: The results from each invocation of the app +simulation+ are copied from a temporary variable into the array +sims[]+ indexed by the foreach loop index +i+.
 
-Line 26: stats file variable is defined and mapped to the file output/average.out
+*Line 26*: +stats+ file variable is defined and mapped to the file +output/average.out+
 
-Line 27: The array of files sims is passed to the application analyze and the results are stored in stats.
+*Line 27*: The array of files +sims[]+ is passed to the application +analyze+ and the results are stored in +stats+.
 
 
 To run:
@@ -283,70 +283,45 @@ We will go into the configuration aspects that allow swift to run your applicati
 on computation resources. The `swift.conf` file contains definitions of various aspects
 of different remote computational resources that swift can run your tasks on.
 
-The examples 4-6, are designed to run on remote sites, and require configurations to be set in
-the `swift.conf`. Here are some of the remote sites defined in the supplied config files,
-swift.conf, xsede.conf and nersc.conf:
+The examples 4-6, are designed to run on remote sites, and require configurations to
+be set in the swift.conf. Of the several sites defined in the supplied config files,
+for this tutorial we will focus on the following sites defined in the swift.conf file:
 
-* Beagle (UChicago)
-* Blues  (LCRC at Argonne)
-* Midway (UChicago)
-* OSGConnect
-* Amazon EC2
-* Legion (Universty College London)
-* Swan   (Cray Partner Network)
-* Stampede (XSEDE/TACC)
-* Gordon   (XSEDE/SDSC)
-* Blacklight (XSEDE/PSC)
-* Edison (NERSC)
-* Collection of Ad-hoc nodes (ad-hoc-1..N).
-
-Please note that the XSEDE sites Stampede, Gordon, Blacklight and Trestles are defined in the config
-file : xsede.conf.
-
-In order to use a different config file besides the default config file swift.conf, specify the
-config file on the swift commandline using the -config option.
-For example:
-
-For part04:
-swift -config xsede.conf -sites stampede p4.swift
+- *Blacklight at PSC*
+- *Gordon at SDSC*
+- *Stampede at TACC*
 
 
-To configure the remote site definition for a particular site, open the xsede-tutorial/swift.conf file
-and edit the site entry for that site. For example, if you like to run the tutorial on the Midway
-cluster, edit the site.midway entry in the xsede-tutorial/swift.conf file and follow the instructions
-given for midway in the config file.
+To configure the remote site definition for a particular site, open the swift-tutorial/swift.conf file and edit the site entry for that site. For example, if you like to run the tutorial on the Stampede cluster, edit the site.stampede entry in the swift-tutorial/xsede.conf file and follow the instructions given for stampede in the config file.
 
-Here is a snippet from the swift.conf for the midway cluster:
+Here is a snippet from the swift.conf for the Stampede cluster:
 
-
------
-# Instructions for Midway:
-# 1. If you are running on the midway login nodes you set jobManager: "local:slurm"
-# 2. Set workDirectory to /tmp/your_username_on_midway
-site.midway {
+----
+# Instructions for Stampede
+# 1. If you are running on the Stampede login nodes set jobManager: "local:slurm"
+# 2. Set workDirectory to /tmp/your_username_on_stampede
+site.stampede {
     execution {
         type      : "coaster"                         # Use coasters to run on remote sites
-        URL       : "midway.rcc.uchicago.edu"         # Midway login node
-        jobManager: "ssh-cl:slurm"                    # Use ssh-cl to connect, slurm is the Local resource manager
+        URL       : "stampede.tacc.xsede.org"         # Stampede login node
+        jobManager: "ssh-cl:slurm"                    # Use ssh-cl to connect, slurm is the cluster's scheduler
         options {
-            maxJobs         : 1                       # Max jobs submitted to LRM
-            nodeGranularity : 1                       # Nodes per job
-            maxNodesPerJob  : 1                       # Nodes per job
-            tasksPerNode    : 1                       # Tasks per Node
-            jobQueue        : "sandyb"                # Select queue from (sandyb, westmere, ...)
+            maxJobs         : 1                       # Max jobs submitted to the cluster scheduler
+            maxNodesPerJob  : 1                       # Nodes requested per job
+            tasksPerNode    : 4                       # Tasks to run concurrently per Node
+            jobQueue        : "development"           # Select queue from (development, normal, large)
             maxJobTime      : "00:25:00"              # Time requested per job
         }
     }
-    staging             : "local"                     # Stage files from "local" system to Midway
-    workDirectory       : "/tmp/"${env.MIDWAY_USERNAME} # Location for intermediate files
+    staging             : "local"                     # Stage files from "local" filesystem
+    workDirectory       : "/tmp/"${env.USER}"/swiftwork" # Location for intermediate files
     maxParallelTasks    : 101                         # Maximum number of parallel tasks
     initialParallelTasks: 100                         # Maximum number of tasks at start
     app.ALL { executable: "*" }                       # All tasks to be found from commandline
 }
------
+----
 
-Note: To ensure that the site you have selected is used by swift for the workflow, update the "sites: [<SITE_NAME>...]"
-with "sites: [midway]".
+Note: To ensure that the site you have selected is used by swift for the workflow, update the "sites: [<SITE_NAME>…]" with "sites: [stampede]".
 
 There are detailed instructions for each of the sites in the xref:remote-configuration[Remote site configuration] section.
 
@@ -361,7 +336,7 @@ Ensure that you have configured the `swift.conf` for your target remote site.
 .p4.swift
 
 ----
-sys::[cat ../part04/p4.swift]
+sys::[cat -n ../part04/p4.swift]
 ----
 
 We rely on the common `sort` command line utility in this example. When a remote site is set as the execution target,
@@ -371,11 +346,11 @@ staging or moving of the necessary input and output files between the target sys
 Once Swift completes execution, you should see a new `sorted.txt` file in the folder containing numerically sorted
 results.
 
-For example, to run the job remotely on Midway and to view the output:
+For example, to run the job remotely on Stampede and to view the output:
 
 -----
 $ cd xsede-tutorial/part04
-$ swift p4.swift
+$ swift -sites stampede p4.swift
 Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
 RunID: run001
 Progress: Thu, 22 Jan 2015 17:09:43-0600
@@ -432,14 +407,14 @@ image::part05.png[align="center"]
 .p5.swift
 
 ----
-sys::[cat ../part05/p5.swift]
+sys::[cat -n ../part05/p5.swift]
 ----
 
 To run:
 
 ----
 $ cd xsede-tutorial/part05
-$ swift p5.swift
+$ swift -sites <SITES> p5.swift
 Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
 RunID: run001
 Progress: Thu, 22 Jan 2015 17:15:01-0600
@@ -537,7 +512,7 @@ image::part06.png[align="center"]
 
 .p6.swift
 ----
-sys::[cat ../part06/p6.swift]
+sys::[cat -n ../part06/p6.swift]
 ----
 
 Note that the workflow is based on data flow dependencies: each simulation depends on the seed value, calculated in this statement:

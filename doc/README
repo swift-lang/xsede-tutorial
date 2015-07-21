@@ -335,8 +335,13 @@ Ensure that you have configured the `swift.conf` for your target remote site.
 sys::[cat -n ../part04/p4.swift]
 ----
 
-We rely on the common `sort` command line utility in this example. When a remote site is set as the execution target,
-Swift will connect to it and start swift-workers which in turn will execute tasks, in this case `sort`. Swift handles the
+*Line 3-6*: The application +sortdata+ takes a file +unsorted+ and returns a file +out+. It uses the commandline utility +sort+ to return a sorted list of the items given to it.
+
+*Line 8-9*: File variable +sorted+ and +unsorted+ are defined, of which +unsorted.txt+ is a file which contain a list of shuffled numbers. 
+
+*Line 11*: The file +sorted.txt mapped to the variable +sorted+ will be created and populated with results from the application invocation +sortdata(unsorted)+.
+
+When a remote site is set as the execution target for an application (+sort+), Swift will connect to it and start swift-workers which in turn will execute tasks. Swift handles the
 staging or moving of the necessary input and output files between the target systems and the machine you are running Swift on.
 
 Once Swift completes execution, you should see a new `sorted.txt` file in the folder containing numerically sorted

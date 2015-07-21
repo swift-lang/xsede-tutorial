@@ -34,21 +34,17 @@ more complex workflows can be expressed with Swift scripts.
 Setup the swift-tutorial
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Clone the repository from github
+Copy the repository from a global folders:
+----
+cp -R /opt/tutorials/swift-tutorial .
+cd swift-tutorial
+----
+
+Or, clone the repository from github
 
 ----
-git clone https://github.com/swift-lang/xsede-tutorial.git
-cd xsede-tutorial
-----
-
-Or, download the zip file from github and unpack.
-
-----
-# Download
-wget https://github.com/swift-lang/xsede-tutorial/archive/master.zip
-unzip master.zip
-mv xsede-tutorial-master xsede-tutorial
-cd xsede-tutorial
+git clone https://github.com/swift-lang/xsede-tutorial.git swift-tutorial
+cd swift-tutorial
 ----
 
 Now, run the tutorial setup script:
@@ -100,7 +96,7 @@ sys::[cat -n ../part01/p1.swift]
 To run this script, run the following command:
 
 -----
-$ cd xsede-tutorial/part01
+$ cd swift-tutorial/part01
 $ swift p1.swift
 Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
 RunID: run001
@@ -156,7 +152,7 @@ the output files will be named
 To run the script and view the output:
 
 -----
-$ cd xsede-tutorial/part02
+$ cd swift-tutorial/part02
 $ swift p2.swift
 Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
 RunID: run001
@@ -212,7 +208,7 @@ sys::[cat -n ../part03/p3.swift]
 To run:
 
 ----
-$ cd xsede-tutorial/part03
+$ cd swift-tutorial/part03
 $ swift p3.swift
 Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
 RunID: run001
@@ -349,7 +345,7 @@ results.
 For example, to run the job remotely on Stampede and to view the output:
 
 -----
-$ cd xsede-tutorial/part04
+$ cd swift-tutorial/part04
 $ swift -sites stampede p4.swift
 Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
 RunID: run001
@@ -413,7 +409,7 @@ sys::[cat -n ../part05/p5.swift]
 To run:
 
 ----
-$ cd xsede-tutorial/part05
+$ cd swift-tutorial/part05
 $ swift -sites <SITES> p5.swift
 Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
 RunID: run001
@@ -530,7 +526,7 @@ and on the bias file, computed and then consumed in these two dependent statemen
 To run:
 
 ----
-$ cd xsede-tutorial/part06
+$ cd swift-tutorial/part06
 $ swift p6.swift
 Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
 RunID: run001
@@ -780,8 +776,8 @@ Swift allows you to run you applications on multiple sites that you have access 
 Let's say you would like to run you applications on Stampede and Gordon
 
 1. Ensure you have enable ssh keys for passwordless access to the both stampede & gordon
-2. Set the site specific variables for both sites in the xsede-tutorial/setup.sh file.
-3. Set the following line in the xsede-tutorial/swift.conf file:
+2. Set the site specific variables for both sites in the swift-tutorial/setup.sh file.
+3. Set the following line in the swift-tutorial/swift.conf file:
 +
 
 ----
@@ -804,7 +800,7 @@ a remote system.
 1. Ensure you have enabled ssh keys for passwordless access to the Stampede login nodes (Only necessary if running from remote)
 2. If you are running on login<ID>.stampede.tacc.utexas.edu, set jobManager: "local:slurm"
 3. Set workDirectory to /tmp/your_username_on_stampede
-4. Set the following line in the xsede-tutorial/swift.conf file.
+4. Set the following line in the swift-tutorial/swift.conf file.
 +
 ----
     sites: [stampede]
@@ -851,7 +847,7 @@ a remote system.
 1. Ensure you have enabled ssh keys for passwordless access to the Blacklight login nodes (Only necessary if running from remote)
 2. If you are running on the login nodes, set jobManager: "local:pbs"
 3. Set workDirectory to /tmp/your_username_on_blacklight
-4. Set the following line in the xsede-tutorial/swift.conf file.
+4. Set the following line in the swift-tutorial/swift.conf file.
 +
 ----
     sites: [blacklight]
@@ -892,7 +888,7 @@ Here are the steps to run the tutorial on Gordon:
 
 1. Ensure you have enabled ssh keys for passwordless access to the Gordon login nodes
 2. Set workDirectory to /tmp/your_username_on_blacklight
-3. Set the following line in the xsede-tutorial/swift.conf file.
+3. Set the following line in the swift-tutorial/swift.conf file.
 +
 ----
     sites: [gordon]
@@ -931,7 +927,7 @@ Here are the steps to run the tutorial on Trestles:
 
 1. Ensure you have enabled ssh keys for passwordless access to the Trestles.
 2. Set workDirectory to /tmp/your_username_on_blacklight
-3. Set the following line in the xsede-tutorial/swift.conf file.
+3. Set the following line in the swift-tutorial/swift.conf file.
 
 ----
    sites: [trestles]

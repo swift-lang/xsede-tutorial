@@ -6,8 +6,8 @@ This tutorial is viewable at:
 http://swift-lang.org/swift-tutorial/doc/tutorial.html
 
 
-Introduction: Why Parallel Scripting?
--------------------------------------
+Introduction: What is Parallel Scripting?
+-----------------------------------------
 
 Swift is a simple scripting language for executing many instances of
 ordinary application programs on distributed and parallel resources.

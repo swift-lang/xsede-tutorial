@@ -357,7 +357,7 @@ Be sure that you have configured the `swift.conf` for your target remote site.
 sys::[cat -n ../part04/p4.swift]
 ----
 
-*Line 3-6*: The application +sortdata+ takes a file +unsorted+ and returns a file +out+. It uses the commandline utility +sort+ to return a sorted list of the items given to it.
+*Line 3-6*: The application +sortdata+ takes a file +unsorted+ and returns a file +out+. It uses the command-line utility +sort+ to return a sorted list of the items given to it.
 
 *Line 8-9*: File variable +sorted+ and +unsorted+ are defined.
 
@@ -432,7 +432,7 @@ image::part05.png[align="center"]
 sys::[cat -n ../part05/p5.swift]
 ----
 
-*Line 3-6*: The application +simulation+ has been modified to take the simulation script as an argument through the file variable +sim_script+ and to return a log file which contains output on the stderr stream from the application. Instead of calling the application +simulation+ the commandline string now calls +bash+
+*Line 3-6*: The application +simulation+ has been modified to take the simulation script as an argument through the file variable +sim_script+ and to return a log file which contains output on the stderr stream from the application. Instead of calling the application +simulation+ the command line string now calls +bash+
 
 *Line 8-11*: The application +analyze+ has been modified to return a log file which contains output on the stderr stream from the application.
 
@@ -529,11 +529,11 @@ Final status: Thu, 22 Jan 2015 17:33:02-0600  Finished successfully:101
 Example 6: Specifying more complex workflow patterns
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-p6.swift expands the workflow pattern of p5.swift to add additional
-stages to the workflow. Here, we generate a dynamic seed value that
-will be used by all of the simulations, and for each simulation, we
-run a pre-processing application to generate a unique "bias
-file". This pattern is shown below, followed by the Swift script.
+p6.swift expands the workflow pattern of p5.swift to add additional stages to the workflow.
+Here, we generate a dynamic seed value that will be used by all of the simulations, and for
+each simulation, we run a pre-processing application to generate a unique "bias file".
+The bias files contains “biases,” which are added to the random numbers generated in simulate.
+This pattern is shown below, followed by the Swift script.
 
 image::part06.png[align="center"]
 
@@ -624,12 +624,11 @@ $ cat output/sim_0.out
 75000310
 ----
 
-We produce 20 values in each bias file. Simulations of less than that
-number of values ignore the unneeded number, while simualtions of more
-than 20 will use the last bias number for all remaining values past
-20.
+We produce 20 values in each bias file. Simulations of less than that 20 values ignore the
+unneeded bias numbers, while simulations of more than 20 will use the last bias number for
+all remaining values past 20.
 
-NOTE: As an exercise, adjust the code to produce the same number of bias values as is needed for each simulation.  As a further exercise, modify the script to generate a unique seed value for each simulation, which is a common practice in ensemble computations.
+NOTE: As an exercise, adjust the code to produce the same number of bias values as are needed for each simulation.  As a further exercise, modify the script to generate a unique seed value for each simulation, which is a common practice in ensemble computations.
 
 Additional information and references
 -------------------------------------
@@ -746,8 +745,8 @@ remote computers (from laptops to supercomputers). If you can `ssh` to
 the system, Swift can likely run applications there.
 
 * The details of where to run applications and how to get files back
-and forth are described in configuration files separate from your
-program. Swift speaks ssh, PBS, Condor, SLURM, LSF, SGE, Cobalt, and
+and forth are described in configuration files that are separate from your
+script. Swift speaks ssh, PBS, Condor, SLURM, LSF, SGE, Cobalt, and
 Globus to run applications, and scp, http, ftp, and GridFTP to move
 data.
 
@@ -774,7 +773,7 @@ Swift's equivalent of `printf()` is `tracef()`, with limited and
 slightly different format codes.
 
 * Swift's parallel `foreach {}` statement is the workhorse of the
-language, and executes all iterations of the loop concurrently. The
+language. It can execute all iterations of the loop concurrently. The
 actual number of parallel tasks executed is based on available
 resources and settable "throttles".
 
@@ -783,7 +782,7 @@ expressions and function calls in your program in parallel, based on
 data flow. These are similarly throttled based on available resources
 and settings.
 
-* Swift also has `if` and `switch` statements for conditional
+* Swift has `if` and `switch` statements for conditional
 execution. These are seldom needed in simple workflows but they enable
 very dynamic workflow patterns to be specified.
 
@@ -794,7 +793,7 @@ get started!
 Remote site configuration
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Part04 onwards, the tutorial is designed to run on remote computational resources.
+Starting with Part04, the tutorial is designed to run on remote computational resources.
 The following sections outline the steps required to enable swift to run tasks remotely.
 
 Setting up ssh-keys for password-less acccess : link:http://hortonworks.com/kb/generating-ssh-keys-for-passwordless-login/[How-to-passwordless-login]

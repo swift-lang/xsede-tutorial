@@ -335,17 +335,21 @@ site.stampede {
 }
 ----
 
-Note: To ensure that the site you have selected is used by Swift for the workflow, update the "sites: [<SITE_NAME>…]" with "sites: [stampede]".
+Note: To ensure that the site you have selected is used by Swift for the workflow, specify the target site on the swift command line using the +-sites+ option. For eg:
+-----
+swift -sites <SITES> <SWIFT_SCRIPT> <ARGS_TO_SWIFTSCRIPT>
+-----
 
-There are detailed instructions for each of the sites in the xref:remote-configuration[Remote site configuration] section.
+Note: A xref:remote-configuration[Remote site configuration] reference for the sites is
+included towards the end of the tutorial. For the XSEDE tutorial the +swift.conf+ config
+provided in the tutorial folder will be sufficient.
 
+Example 4: Running a simple app on a remote resource
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Example 4: Running a simple app on remote node
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-In `p4.swift`, there is a simple `app` which takes a file containing random numbers and `sort` them before returning a sorted output. In the `part04`
-folder we have a file, `unsorted.txt`, which contains 100 random integers ranging from 0 to 99 and we wish to run the job on a remote computational resource.
-Ensure that you have configured the `swift.conf` for your target remote site.
+`p4.swift` shows a simple `app` that takes a file containing random numbers and `sorts` them,
+then returns the sorted output. The `part04` folder has a file, `unsorted.txt`, that contains 100 random integers ranging from 0 to 99. We will run the job on a remote resource.
+Be sure that you have configured the `swift.conf` for your target remote site.
 
 .p4.swift
 
@@ -355,15 +359,15 @@ sys::[cat -n ../part04/p4.swift]
 
 *Line 3-6*: The application +sortdata+ takes a file +unsorted+ and returns a file +out+. It uses the commandline utility +sort+ to return a sorted list of the items given to it.
 
-*Line 8-9*: File variable +sorted+ and +unsorted+ are defined, of which +unsorted.txt+ is a file which contain a list of shuffled numbers. 
+*Line 8-9*: File variable +sorted+ and +unsorted+ are defined.
 
-*Line 11*: The file +sorted.txt mapped to the variable +sorted+ will be created and populated with results from the application invocation +sortdata(unsorted)+.
+*Line 11*: The file +sorted.txt (mapped to the variable +sorted+) will be created and populated with results from the application invocation +sortdata(unsorted)+.
 
-When a remote site is set as the execution target for an application (+sort+), Swift will connect to it and start swift-workers which in turn will execute tasks. Swift handles the
-staging or moving of the necessary input and output files between the target systems and the machine you are running Swift on.
+When a remote site is set as the execution target for an application (in this case +sort+),
+Swift will connect to it and start swift-workers which in turn will execute tasks. Swift  moves the needed input and output files between the target systems and the machine you are running Swift on. We call this staging.
 
-Once Swift completes execution, you should see a new `sorted.txt` file in the folder containing numerically sorted
-results.
+Once Swift finishes, you should see a new `sorted.txt` file in the folder. This will contain
+the sorted results.
 
 For example, to run the job remotely on Stampede and to view the output:
 

@@ -415,18 +415,6 @@ sys::[cat -n ../part05/p5.swift]
 
 *Line 8-11*: The application +analyze+ has been modified to return a log file which contains output on the stderr stream from the application.
 
-*Line 13-16*: The +arg+ built-in extracts commandline arguments to swift, and when none are specified the second argument is treated as the default.
-
-*Line 18*: +sims+ is defined as an array of type files.
-
-*Line 20-24*: The +foreach+ loop iterates over a list of integers +[0:nsim-1]+ with +nsim+ set by the commandline option +-nsim+, or the default 10
-
-*Line 23*: The results from each invocation of the app +simulation+ are copied from a temporary variable into the array +sims[]+ indexed by the foreach loop index +i+.
-
-*Line 26*: +stats+ file variable is defined and mapped to the file +output/average.out+
-
-*Line 27*: The array of files +sims[]+ is passed to the application +analyze+ and the results are stored in +stats+.
-
 
 To run:
 

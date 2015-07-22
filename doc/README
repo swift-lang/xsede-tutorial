@@ -9,26 +9,39 @@ http://swift-lang.org/swift-tutorial/doc/tutorial.html
 Introduction: What is Parallel Scripting?
 -----------------------------------------
 
-Swift is a simple scripting language for executing many instances of
-ordinary application programs on distributed and parallel resources.
-Swift scripts run many copies of ordinary programs concurrently, using
-statements like this:
+Swift is a simple scripting language.  Swift can run many copies of
+ordinary application programs ("apps") on local or remote resources.
+Resources can be laptops, distributed computers (cloud), and parallel
+computers (cluster, HPC, XSEDE). Swift uses the resources you give it to
+run many copies at once (in parallel, concurrently).
+
+Because Swift is often used to coordinate the "work" of running many
+other programs, we often call it a "workflow" language.
+
+The key part of a Swift script might look like this:
 
 -----
-foreach protein in proteinList {
-  runBLAST(protein);
+foreach protein, i in proteinList {
+  output[i] = runSimulation(protein);
 }
 -----
 
-Swift acts like a structured "shell" language. It runs programs concurrently as
-soon as their inputs are available, reducing the need for complex parallel
-programming.  Swift expresses workflow in a portable fashion: The same script
-can run on multicore computers, clusters, clouds, grids, and supercomputers.
+Swift acts like a structured "shell" language. A Swift script just
+says what needs to be done: what are the apps and what are their
+inputs and outputs. Swift then determines what apps can run in parallel,
+which apps can run when, and where each app can run.
 
-In this tutorial, you will be able to first try a few Swift examples (examples
-1-3) on the local machine (workflow.iu.xsede.org), to get a sense of the language.
-Then, in examples 4-6 you will run similar workflows on XSEDE resources and see how
-more complex workflows can be expressed with Swift scripts.
+Apps run as soon as their inputs are available.  They run on the
+resources you provide (via a swift.conf file).  And they run in
+parallel if possible. This makes Swift scripts portable. By adjusting
+the swift.conf file, you can run the apps on a multi-core computer,
+cloud nodes, or a set of HPC systems (like the ones XSEDE provides).
+
+In this tutorial, you'll first try a few Swift examples (scripts 1-3)
+on a local login host (workflow.iu.xsede.org), to get a sense of the
+language.  Then, in example scripts 4-6 you will run similar workflows on
+XSEDE resources and see how more complex workflows can be expressed
+with Swift scripts.
 
 
 Setup the swift-tutorial

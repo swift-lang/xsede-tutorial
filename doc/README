@@ -9,16 +9,11 @@ http://swift-lang.org/swift-tutorial/doc/tutorial.html
 Introduction: What is Parallel Scripting?
 -----------------------------------------
 
-Swift is a simple scripting language.  Swift can run many copies of
-ordinary application programs ("apps") on local or remote resources.
-Resources can be laptops, distributed computers (cloud), and parallel
-computers (cluster, HPC, XSEDE). Swift uses the resources you give it to
-run many copies at once (in parallel, concurrently).
-
-Because Swift is often used to coordinate the "work" of running many
-other programs, we often call it a "workflow" language.
-
-The key part of a Swift script might look like this:
+Swift is a simple scripting language.  Swift can run many copies of ordinary application
+programs (apps) on local or remote resources.  The resources can include laptops,
+distributed computers (grid, cloud), and parallel computers (cluster, HPC). Swift can use
+the resources you give it to run the copies at the same time (in parallel).  A key part
+of a Swift script looks like this:
 
 -----
 foreach protein, i in proteinList {
@@ -26,16 +21,12 @@ foreach protein, i in proteinList {
 }
 -----
 
-Swift acts like a structured "shell" language. A Swift script just
-says what needs to be done: what are the apps and what are their
-inputs and outputs. Swift then determines what apps can run in parallel,
-which apps can run when, and where each app can run.
-
-Apps run as soon as their inputs are available.  They run on the
-resources you provide (via a swift.conf file).  And they run in
-parallel if possible. This makes Swift scripts portable. By adjusting
-the swift.conf file, you can run the apps on a multi-core computer,
-cloud nodes, or a set of HPC systems (like the ones XSEDE provides).
+Swift acts like a structured "shell" language. A Swift script just says what needs to be
+done: what are the apps and what are their inputs and outputs. Swift then determines what
+can run in parallel, what can run when, and what can run where.  Programs run as soon as
+their inputs are available.  They run on the resources you provide.  And they run in parallel
+if possible. So a Swift script is portable, running on a laptop, a cloud, or a collection of
+HPC systems
 
 In this tutorial, you'll first try a few Swift examples (scripts 1-3)
 on a local login host (workflow.iu.xsede.org), to get a sense of the
@@ -47,13 +38,14 @@ with Swift scripts.
 Setup the swift-tutorial
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Copy the repository from a global folders:
+Copy the tutorial repository from a global folder:
+
 ----
 cp -R /opt/tutorials/swift-tutorial .
 cd swift-tutorial
 ----
 
-Or, clone the repository from github
+Or, clone the tutorial repository from github
 
 ----
 git clone https://github.com/swift-lang/xsede-tutorial.git swift-tutorial
@@ -66,7 +58,7 @@ Now, run the tutorial setup script:
 source setup.sh  # You must run this with "source" !
 ----
 
-This step will add the sample applications +simulate+ and +stats+
+This step will add the example applications +simulate+ and +stats+
 (explained in the next part) and some other functionalities to
 your local $PATH for you to run the tutorial. It also adds the
 Swift installation on the workflow.iu.xsede.org machine to your PATH.
@@ -85,8 +77,8 @@ running with swift on your local machine (localhost).
 Example 1: Run a single application under Swift
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The first swift script, p1.swift, runs simulate.sh to generate a
-single random number. It writes the number to a file.
+The first swift script, p1.swift, runs simulate.sh. This generates a
+single random number. Swift writes that number to a file.
 
 image::part01.png["p1 workflow",align="center"]
 
@@ -98,11 +90,19 @@ sys::[cat -n ../part01/p1.swift]
 
 *Line 1*: Defines +file+ as a type.
 
-*Line 3-6*: An app function called +simulation+ is defined which takes no input arguments and returns a value of type file. An app function is a function that is executed on target resources.
+*Line 3-6*: Defines an app function called +simulation+, which has no input arguments and has
+one output, type file. An app function is a function that is executed on target resources.
 
-*Line 5*: This single line within the app function definition composes the commandline used to invoke the application on the remote machines. +stdout+ and +stderr+ are keywords that can be used to redirect these output streams from the application to files defined by the user. +filename()+ gets the correct path to which the +file+ variable +o+ maps to on the remote system. Swift manages the transfer to and from the remote system, of any variables specified in the input and output parameter list.
+*Line 5*: This line within the app function definition defines the command used to invoke the
+application on the remote machines. +stdout+ and +stderr+ are keywords that can be used to
+redirect these output streams from the application to files defined by the user. +filename()+
+gets the correct path that the +file+ variable +o+ maps to on the remote system. Swift manages
+the transfer to and from the remote system of any variables specified in the input and output
+parameter list.
 
-*Line 8*: A variable +f+ of type file is defined which maps to a file +sim.out+ on the filesystem. The angle bracket +< >+ are used to define mappings from files and directories to swift variables. For more on mappers here’s mapper http://swift-lang.org/guides/trunk/userguide/userguide.html#_mappers[reference]
+*Line 8*: A variable +f+ of type file is defined that maps to a file called +sim.out+ on the
+filesystem. The angle bracket +< >+ are used to define mappings from files and directories to
+Swift variables. For more on mappers here’s mapper http://swift-lang.org/guides/trunk/userguide/userguide.html#_mappers[reference]
 
 *Line 9*: Variable +f+ is assigned the output from the invocation of the app simulation.
 
@@ -151,16 +151,16 @@ sys::[cat -n ../part02/p2.swift]
 
 *Lines 1-7*: These are unchanged from example 1
 
-*Lines 8-11*: Here we use the +foreach+ looping construct to iterate over a list of integers from 0 to 9 generated by +[0:9]+. As a result the statements inside the foreach loop will be executed 10 times in parallel.
+*Lines 8-11*: Here we use the +foreach+ loop construct to iterate over a list of integers from 0 to 9 generated by +[0:9]+. This means that the statements inside the foreach loop will be executed 10 times, potentially in parallel.
 
 *Line 9*: Here we use define a variable +f+ of type file, and use the +single_file_mapper+ to map it to a unique file name created by including the loop index in the filename. The +single_file_mapper+ as it's name suggests maps a single file whose name is specified using the +file+ attribute.
 
-*Line 10*: The results from the app +simulation+ are returned to the variable +f+ which maps to unique filename per iteration of the loop.
+*Line 10*: The results from the app +simulation+ are returned to the variable +f+, which is
+different in each iteration of the loop.
 
 
-The script also shows an example of naming the output files of an ensemble run. In this case,
-the output files will be named
-`output/sim_N.out`.
+This is an example of how you can name the output files of an ensemble run. In this case,
+the output files will be `output/sim_N.out`.
 
 To run the script and view the output:
 
@@ -186,12 +186,10 @@ $ cat output/sim_2.out
 Example 3: Analyzing results of a parallel ensemble
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-After all the parallel simulations in an ensemble run have completed,
-it is typically necessary to gather and analyze their results with some
-kind of post-processing analysis program or script.  p3.swift
-introduces such a postprocessing step. In this case, the files created
-by all of the parallel runs of `simulation.sh` will be averaged by
-the trivial "analysis application" `stats.sh`:
+After all the simulations in an ensemble run are done, we typically gather and analyze their
+results with a post-processing analysis program or script.  p3.swift shows this.
+Now, the files created by all of the runs of `simulation.sh` are be averaged by the trivial
+"analysis application" `stats.sh`:
 
 image::part03.png[align="center"]
 
@@ -201,22 +199,29 @@ image::part03.png[align="center"]
 sys::[cat -n ../part03/p3.swift]
 ----
 
-*Line 3-6*: The application +simulation+ has been modified to accept 3 arguments which control the nature of the simulation. The app block composes the commandline invocation to be invoked on the compute resources.
+*Line 3-6*: The application +simulation+ has been modified to accept 3 arguments which control
+the simulation. Line 5 defines the command invocation to be run on the compute resources.
 
-*Line 8-11*: A new application analyze is defined which takes an array of files as input argument and returns a single file. When variables mapped to files are passed as input or outputs to an app, swift manages the movement(staging) of these files between where the swift script is executed and the compute resources where the applications execute.
+*Line 8-11*: A new application analyze is defined, analyze takes an array of files as input
+and returns a single file. When variables mapped to files are passed as input or outputs to an app, Swift manages the movement(staging) of these files between where the swift script is executed and the compute resources where the applications execute. Line 10 defines the command to
+be run on the compute resources
 
-*Line 13-16*: The +arg+ built-in extracts commandline arguments to swift, and when none are specified the second argument is treated as the default.
+*Line 13-16*: The built-in +arg+ built-in extracts command line arguments that are given when the Swift script is called. The second argument to +arg+ is used as the default if this option
+is not used on the command line.
 
 *Line 18*: +sims+ is defined as an array of type files.
 
-*Line 20-24*: The +foreach+ loop iterates over a list of integers +[0:nsim-1]+ with +nsim+ set by the commandline option +-nsim+, or the default 10
+*Line 20-24*: The +foreach+ loop iterates over a list of integers +[0:nsim-1]+. +nsim+ is set
+by a command line option to Swift +-nsim+. If it is not set on the command line, it defaults
+to 10 (see Line 13).  In each loop iteration, Line 21 defines a temporary output file; Line 22
+runs the simulation function, which actually calls the simulate app; and Line 23 copies the
+simulation function output to an element of the sims array, indexed by the +foreach+ loop
+index +i+
 
-*Line 23*: The results from each invocation of the app +simulation+ are copied from a temporary variable into the array +sims[]+ indexed by the foreach loop index +i+.
+*Line 26*: +stats+ fis defined as a file variable and mapped to the file +output/average.out+
 
-*Line 26*: +stats+ file variable is defined and mapped to the file +output/average.out+
-
-*Line 27*: The array of files +sims[]+ is passed to the application +analyze+ and the results are stored in +stats+.
-
+*Line 27*: The array of files +sims[]+ is passed to the function +analyze+ (which runs the
+analyze app) and the results are stored in +stats+.
 
 To run:
 
@@ -257,12 +262,11 @@ int range  = toInt(arg("range","100"));
 int values = toInt(arg("values","5"));
 -----
 
-Now we can specify that more runs should be performed and that each should run for more
-timesteps, and produce more that one value each, within a specified range, using command line
-arguments placed after the Swift script name in the form `-parameterName=value`:
+Now lets try running more runs, each with more timesteps, and each producing  more that one
+value, within a specified range (between 0 and range), using command line arguments of the
+form +-parameterName=value+ give to Swift.
 
-Now try running (`-nsim=`) 100 simulations of (`-steps=`) 1 second each:
-
+For example, try running (`-nsim=`) 100 simulations of (`-steps=`) 1 second each:
 
 -----
 $ swift p3.swift -nsim=100 -steps=1
@@ -288,20 +292,21 @@ on the site's compute nodes.
 ----------------------
 
 This section introduces the aspects of running on remote computational resources.
-We will go into the configuration aspects that allow swift to run your applications
-on computation resources. The `swift.conf` file contains definitions of various aspects
-of different remote computational resources that swift can run your tasks on.
+We will go into the configuration aspects that allow Swift to run applications on computation
+resources. The `swift.conf` file contains definitions of various aspects of different remote
+computational resources that Swift can run your tasks on. Swift automatically looks for this
+file when it runs.
 
-The examples 4-6, are designed to run on remote sites, and require configurations to
-be set in the swift.conf. Of the several sites defined in the supplied config files,
-for this tutorial we will focus on the following sites defined in the swift.conf file:
+Examples 4-6 are designed to run on remote sites, so they require the configuration to
+be set in the swift.conf. The supplied +swift.conf+ config file, define several sites, and in
+this tutorial, we will focus on the following sites:
 
 - *Blacklight at PSC*
 - *Gordon at SDSC*
 - *Stampede at TACC*
 
 
-To configure the remote site definition for a particular site, open the swift-tutorial/swift.conf file and edit the site entry for that site. For example, if you like to run the tutorial on the Stampede cluster, edit the site.stampede entry in the swift-tutorial/swift.conf file and follow the instructions given for stampede in the config file.
+To configure the definition for a particular site, open the swift-tutorial/swift.conf file and edit the site entry for that site. For example, if you want to run the tutorial on the Stampede cluster, edit the site.stampede entry in the swift-tutorial/swift.conf file and follow the instructions given for stampede in the config file.
 
 Here is a snippet from the swift.conf for the Stampede cluster:
 
@@ -330,7 +335,7 @@ site.stampede {
 }
 ----
 
-Note: To ensure that the site you have selected is used by swift for the workflow, update the "sites: [<SITE_NAME>…]" with "sites: [stampede]".
+Note: To ensure that the site you have selected is used by Swift for the workflow, update the "sites: [<SITE_NAME>…]" with "sites: [stampede]".
 
 There are detailed instructions for each of the sites in the xref:remote-configuration[Remote site configuration] section.
 

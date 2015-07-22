@@ -402,8 +402,8 @@ $ more sorted.txt
 
 -----
 
-IMPORTANT: Once the Swift status shows the jobs to be "Submitted", the time
-to completion of jobs can vary based on how busy the queues are on the target resource.
+IMPORTANT: Once the Swift status shows the jobs to be "Submitted", the time-to-completion of
+the jobs can vary based on how busy the queues are on the target resource.
 
 TIP: The xref:remote-configuration[Remote configuration] section explains how to check
 the status of your jobs in the queue for systems with PBS, Condor or Slurm schedulers.
@@ -411,12 +411,11 @@ the status of your jobs in the queue for systems with PBS, Condor or Slurm sched
 Example 5: Running a parallel ensemble on compute resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`p5.swift` will run our mock "simulation" applications on compute nodes.  The
-script is similar to `p3.swift`, but specifies that each simulation app
-invocation should additionally return the log file which the application writes
-to `stderr`. In `p3.swift` the apps simulation and stats called the binaries
-stats and simulate which are available on the local machine and is present in
-the system path. The `p5.swift` script
+`p5.swift` will run our mock "simulation" applications on compute nodes.  The script is
+similar to `p3.swift`, but specifies that each simulation app invocation should additionally
+return the log file that the application writes to `stderr`. In `p3.swift` the apps
+simulation and stats called the binaries stats and simulate which were available on the local
+machine and were present in the system path. The `p5.swift` script
 
 ----
 app (file out, file log) simulation (int sim_steps, int sim_range, int sim_values, file sim_script)
@@ -473,10 +472,10 @@ Running on node: nid00116
 Performing larger Swift runs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To test with larger runs, there are two changes that are required. The first is
-a change to the command line arguments. The example below will run 1000
-simulations with each simulation taking 5 seconds.
-
+To run larger tests, two changes that are required. The first is a change to the command
+line arguments. The example below will run 100 simulations with each simulation taking 5
+seconds. The second change, is to increase the resource limits specified in the +swift.conf+.
+For example, increasing the number of nodes requested, the tasks requested per node etc.
 
 -----
 # You can increase maxJobs or tasksPerNode to increase the resources available to Swift

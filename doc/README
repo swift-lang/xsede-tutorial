@@ -301,7 +301,7 @@ for this tutorial we will focus on the following sites defined in the swift.conf
 - *Stampede at TACC*
 
 
-To configure the remote site definition for a particular site, open the swift-tutorial/swift.conf file and edit the site entry for that site. For example, if you like to run the tutorial on the Stampede cluster, edit the site.stampede entry in the swift-tutorial/xsede.conf file and follow the instructions given for stampede in the config file.
+To configure the remote site definition for a particular site, open the swift-tutorial/swift.conf file and edit the site entry for that site. For example, if you like to run the tutorial on the Stampede cluster, edit the site.stampede entry in the swift-tutorial/swift.conf file and follow the instructions given for stampede in the config file.
 
 Here is a snippet from the swift.conf for the Stampede cluster:
 
@@ -423,6 +423,23 @@ image::part05.png[align="center"]
 ----
 sys::[cat -n ../part05/p5.swift]
 ----
+
+*Line 3-6*: The application +simulation+ has been modified to take the simulation script as an argument through the file variable +sim_script+ and to return a log file which contains output on the stderr stream from the application. Instead of calling the application +simulation+ the commandline string now calls +bash+
+
+*Line 8-11*: The application +analyze+ has been modified to return a log file which contains output on the stderr stream from the application.
+
+*Line 13-16*: The +arg+ built-in extracts commandline arguments to swift, and when none are specified the second argument is treated as the default.
+
+*Line 18*: +sims+ is defined as an array of type files.
+
+*Line 20-24*: The +foreach+ loop iterates over a list of integers +[0:nsim-1]+ with +nsim+ set by the commandline option +-nsim+, or the default 10
+
+*Line 23*: The results from each invocation of the app +simulation+ are copied from a temporary variable into the array +sims[]+ indexed by the foreach loop index +i+.
+
+*Line 26*: +stats+ file variable is defined and mapped to the file +output/average.out+
+
+*Line 27*: The array of files +sims[]+ is passed to the application +analyze+ and the results are stored in +stats+.
+
 
 To run:
 
@@ -824,11 +841,6 @@ a remote system.
     sites: [stampede]
 ----
 +
-5. To run the tutorial apps specify the xsede.conf config file on the swift commandline:
-+
-----
-    swift -config xsede.conf <SWIFT_SCRIPT>
-----
 
 
 NOTE: Stampede uses Lustre parallel shared filesystem. The environment variables $HOME, $WORK, $SCRATCH
@@ -871,11 +883,6 @@ a remote system.
     sites: [blacklight]
 ----
 +
-5. To run the tutorial apps specify the xsede.conf config file on the swift commandline:
-+
-----
-    swift -config xsede.conf <SWIFT_SCRIPT>
-----
 
 
 NOTE: Blacklight has $WORK, $HOME mounted on a shared filesystem.
@@ -912,11 +919,6 @@ Here are the steps to run the tutorial on Gordon:
     sites: [gordon]
 ----
 +
-4. To run the tutorial apps specify the xsede.conf config file on the swift commandline:
-+
-----
-    swift -config xsede.conf <SWIFT_SCRIPT>
-----
 
 Notes:
 

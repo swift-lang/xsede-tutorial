@@ -63,7 +63,7 @@ This step will add the example applications +simulate+ and +stats+
 your local $PATH for you to run the tutorial. It also adds the
 Swift installation on the workflow.iu.xsede.org machine to your PATH.
 
-Note: We will come back to Swift configuration using the `swift.conf` file
+NOTE: We will come back to Swift configuration using the `swift.conf` file
 in part4-6 to enable remote sites for computation.
 
 
@@ -335,12 +335,12 @@ site.stampede {
 }
 ----
 
-Note: To ensure that the site you have selected is used by Swift for the workflow, specify the target site on the swift command line using the +-sites+ option. For eg:
+NOTE: To ensure that the site you have selected is used by Swift for the workflow, specify the target site on the swift command line using the +-sites+ option. For eg:
 -----
 swift -sites <SITES> <SWIFT_SCRIPT> <ARGS_TO_SWIFTSCRIPT>
 -----
 
-Note: A xref:remote-configuration[Remote site configuration] reference for the sites is
+NOTE: A xref:remote-configuration[Remote site configuration] reference for the sites is
 included towards the end of the tutorial. For the XSEDE tutorial the +swift.conf+ config
 provided in the tutorial folder will be sufficient.
 

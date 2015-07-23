@@ -85,7 +85,7 @@ Example 1: Run a single application under Swift
 The first swift script, p1.swift, runs simulate.sh. This generates a
 single random number. Swift writes that number to a file.
 
-image::part01.png["p1 workflow",align="center"]
+image::./images/part01.jpg["p1 workflow",align="center"]
 
 .p1.swift
 
@@ -147,7 +147,7 @@ Example 2: Running an ensemble of many apps in parallel with a "foreach" loop
 
 The `p2.swift` script introduces the `foreach` parallel iteration construct to run many concurrent simulations.
 
-image::part02.png[align="center"]
+image::./images/part02.jpg[align="center"]
 
 .p2.swift
 -----
@@ -196,7 +196,7 @@ results with a post-processing analysis program or script.  p3.swift shows this.
 Now, the files created by all of the runs of `simulation.sh` are be averaged by the trivial
 "analysis application" `stats.sh`:
 
-image::part03.png[align="center"]
+image::./images/part03.jpg[align="center"]
 
 .p3.swift
 
@@ -429,7 +429,7 @@ app (file out, file log) simulation (int sim_steps, int sim_range, int sim_value
 }
 ----
 
-image::part05.png[align="center"]
+image::./images/part05.jpg[align="center"]
 
 .p5.swift
 
@@ -540,7 +540,7 @@ each simulation, we run a pre-processing application to generate a unique "bias 
 The bias files contains “biases,” which are added to the random numbers generated in simulate.
 This pattern is shown below, followed by the Swift script.
 
-image::part06.png[align="center"]
+image::./images/part06.jpg[align="center"]
 
 .p6.swift
 ----

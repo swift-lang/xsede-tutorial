@@ -28,6 +28,11 @@ their inputs are available.  They run on the resources you provide.  And they ru
 if possible. So a Swift script is portable, running on a laptop, a cloud, or a collection of
 HPC systems
 
+The way in which Swift runs applications on local and remote resources is shown here:
+
+.Swift runs apps on local and  multiple remote resources
+image::swift_arch.png["How Swift runs apps on resources",align="center",width="750"]
+
 In this tutorial, you'll first try a few Swift examples (scripts 1-3)
 on a local login host (workflow.iu.xsede.org), to get a sense of the
 language.  Then, in example scripts 4-6 you will run similar workflows on

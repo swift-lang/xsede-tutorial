@@ -21,7 +21,7 @@ then
 elif [[ $MACHINE == "stampede" ]]
 then
     echo "$MPI_APP_PATH $*"
-    $MPI_APP_PATH $*
+    ibrun -n $MPI_RANKS -o 0 $MPI_APP_PATH $*
 
 elif [[ $MACHINE == "blacklight" ]]
 then

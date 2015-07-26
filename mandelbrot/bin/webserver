@@ -1,0 +1,13 @@
+#!/bin/bash
+
+if (( "$#" < "1" ))
+then
+	echo "ERROR: Missing required argument <PORT>" >&1
+	echo "Usage: webserver <PORT 50000-65000>"
+	exit -1
+fi
+
+PORT=$1
+
+python -m "SimpleHTTPServer" $PORT &> webserver.log &
+echo "Started webserver on port $PORT"

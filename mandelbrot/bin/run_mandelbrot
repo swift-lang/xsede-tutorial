@@ -23,6 +23,11 @@ then
     echo "$MPI_APP_PATH $*"
     ibrun -n $MPI_RANKS -o 0 $MPI_APP_PATH $*
 
+elif [[ $MACHINE == "gordon" ]]
+then
+    echo "$MPI_APP_PATH $*"
+    mpirun_rsh -np $MPI_RANKS -hostfile $PBS_NODEFILE $MPI_APP_PATH $*
+
 elif [[ $MACHINE == "blacklight" ]]
 then
     export PATH=/usr/local/packages/ImageMagick-6.7.3-10/bin:$PATH

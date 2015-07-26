@@ -363,15 +363,19 @@ this tutorial, we will focus on the following sites:
 
 To configure the definition for a particular site, open the swift-tutorial/swift.conf file and edit the site entry for that site. For example, if you want to run the tutorial on the Stampede cluster, edit the site.stampede entry in the swift-tutorial/swift.conf file and follow the instructions given for stampede in the config file.
 
-Here is a snippet from the swift.conf for the Stampede cluster:
+Here is the section of the +swift.conf+ file that describes the XSEDE resource "Stampede":
 
-----
+////
 # Instructions for Stampede
 # 1. If you are running on the Stampede login nodes set jobManager: "local:slurm"
 # 2. Set workDirectory to /tmp/your_username_on_stampede
+////
+
+////
+----
 site.stampede {
     execution {
-        type      : "coaster"                         # Use coasters to run on remote sites
+        type      : "coaster"                         # Use Swift's task service to run on remote sites
         URL       : "stampede.tacc.xsede.org"         # Stampede login node
         jobManager: "ssh-cl:slurm"                    # Use ssh-cl to connect, slurm is the cluster's scheduler
         options {
@@ -389,19 +393,18 @@ site.stampede {
     app.ALL { executable: "*" }                       # All tasks to be found from commandline
 }
 ----
+////
 
-NOTE: To ensure that the site you have selected is used by Swift for
-the workflow, specify the target site on the swift command line using
-the +-sites+ option. For example:
+----
+sys::[cat -n stampede.example.conf]
+----
+
+NOTE: You tell Swift which resource site(s) it should execute the apps of your workflow script
+on by using the +-sites+ option of the +swift+ command. For example:
 
 -----
-swift -sites <SITES> <SWIFT_SCRIPT> <ARGS_TO_SWIFTSCRIPT>
+swift -sites stampede,gordan myscript.swift -nmodels=1024
 -----
-
-NOTE: A xref:remote-configuration[Remote site configuration] reference
-for the sites is included towards the end of the tutorial. For the
-XSEDE tutorial the +swift.conf+ config provided in the tutorial folder
-will be sufficient.
 
 Example 4: Running a simple app on a remote resource
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -480,17 +483,26 @@ IMPORTANT: Once the Swift status shows the jobs to be "Submitted", the
 time it will take to complete the jobs can vary greatly based on how
 congested the queues are on the target resource.
 
-TIP: The xref:remote-configuration[Remote configuration] section
-explains how to check the status of your jobs in the queue for systems
-with PBS, Condor or Slurm schedulers.
+TIP: For this XSEDE tutorial, the +swift.conf+ config provided in the
+tutorial folders is sufficient.  To learn more about configuring Swift
+for specific sites and resource needs, a
+xref:remote-configuration[Remote site configuration] reference for the
+XSEDE sites supported in the tutorial is included near the end of this
+tutorial page. _That section also explains how to check the status of
+your jobs in the queue for systems with PBS, Condor or Slurm
+schedulers._
+
+
+
 
 Example 5: Running a parallel ensemble on compute resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`p5.swift` will run our mock "simulation" applications on compute
-nodes.  The script is similar to `p3.swift`, but specifies that each
-+simulation()+ app invocation should additionally return the log file
-that the application writes to `stderr`.
+Example `p5.swift` and its associated +swift.conf+ file will run our
+mock "simulation" applications on the compute nodes of a remote XSEDE
+resource.  The script is similar to `p3.swift`, but specifies that
+each +simulation()+ app invocation should additionally return the log
+file that the application writes to `stderr`.
 
 In `p3.swift` the apps +simulation()+ and +stats()+ called the
 excutable programs +stats+ and +simulate+ which were available on the
@@ -509,7 +521,8 @@ first time that an app needs to run on a remote location, using its
 ----
 app (file out, file log) simulation (int sim_steps, int sim_range, int sim_values, file sim_script)
 {
-  bash @sim_script "--timesteps" sim_steps "--range" sim_range "--nvalues" sim_values stdout=@out stderr=@log;
+  bash @sim_script "--timesteps" sim_steps "--range" sim_range "--nvalues" sim_values
+       stdout=@out stderr=@log;
 }
 ----
 

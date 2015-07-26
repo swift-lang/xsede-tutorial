@@ -1,0 +1,1 @@
+PATH=/home/wilde/asciidoc/bin:/home/wilde/source-highlight.3.1.8.install/bin:$PATH

@@ -752,6 +752,112 @@ a further exercise, modify the script to generate a unique seed value
 for each simulation, which is a common practice in ensemble
 computations.
 
+
+Example 7: Running MPI applications
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The +p7.swift+ script runs a simple mandelbrot application that generates
+a fractal image. The application takes the resolution of the image, an
+mpi strategy and the number of iterations computed per point in the problem
+space.
+
+.p7.swift
+----
+sys::[cat -n ../part07/p7.swift]
+----
+
+Note that the workflow execution pattern is driven by data flow
+dependencies. Each simulation depends on the seed value, calculated in
+line 42 ( +seedfile = genseed(1,simulate_script)+ ) and on the bias
+file, computed and then consumed in these two dependent statements at
+lines 50-51:
+
+-----
+  biasfile = genbias(1000, 20, simulate_script);
+  (simout,simlog) = simulation(steps, range, biasfile, 1000000, values, simulate_script, seedfile);
+-----
+
+To run:
+
+----
+$ cd swift-tutorial/part06
+$ swift p6.swift
+Swift 0.96.2 git-rev: 6390483cc61035700e7278ae1a888f27b3bded2b heads/release-0.96-swift 6286
+RunID: run001
+Progress: Thu, 22 Jan 2015 17:54:47-0600
+
+*** Script parameters: nsim=10 range=100 num values=10
+
+Progress: Thu, 22 Jan 2015 17:54:48-0600  Submitting:11
+Progress: Thu, 22 Jan 2015 17:55:01-0600  Submitted:11
+Progress: Thu, 22 Jan 2015 17:55:08-0600  Stage in:3  Submitted:8
+Progress: Thu, 22 Jan 2015 17:55:09-0600  Submitted:7  Active:4
+Progress: Thu, 22 Jan 2015 17:55:29-0600  Submitted:4  Active:4  Finished successfully:3
+Progress: Thu, 22 Jan 2015 17:55:32-0600  Submitted:3  Active:4  Finished successfully:4
+Progress: Thu, 22 Jan 2015 17:55:49-0600  Stage in:3  Submitted:6  Active:1  Finished successfully:7
+Progress: Thu, 22 Jan 2015 17:55:50-0600  Submitted:6  Active:4  Finished successfully:7
+Progress: Thu, 22 Jan 2015 17:55:52-0600  Submitted:6  Active:3  Stage out:1  Finished successfully:7
+Progress: Thu, 22 Jan 2015 17:56:10-0600  Submitted:6  Active:4  Finished successfully:11
+Progress: Thu, 22 Jan 2015 17:56:31-0600  Stage in:2  Submitted:4  Active:2  Finished successfully:13
+Progress: Thu, 22 Jan 2015 17:56:32-0600  Submitted:2  Active:4  Finished successfully:15
+Progress: Thu, 22 Jan 2015 17:56:53-0600  Active:2  Finished successfully:19
+Progress: Thu, 22 Jan 2015 17:57:14-0600  Stage in:1  Finished successfully:21
+Final status: Thu, 22 Jan 2015 17:57:16-0600  Finished successfully:22
+
+# which produces the following output:
+$ ls output/
+average.log  bias_1.dat  bias_4.dat  bias_7.dat  seed.dat   sim_1.log  sim_2.out  sim_4.log  sim_5.out  sim_7.log  sim_8.out
+average.out  bias_2.dat  bias_5.dat  bias_8.dat  sim_0.log  sim_1.out  sim_3.log  sim_4.out  sim_6.log  sim_7.out  sim_9.log
+bias_0.dat   bias_3.dat  bias_6.dat  bias_9.dat  sim_0.out  sim_2.log  sim_3.out  sim_5.log  sim_6.out  sim_8.log  sim_9.out
+
+# Each sim_N.out file is the sum of its bias file plus newly "simulated" random output scaled by 1,000,000:
+
+$ cat output/bias_0.dat
+     302
+     489
+      81
+     582
+     664
+     290
+     839
+     258
+     506
+     310
+     293
+     508
+      88
+     261
+     453
+     187
+      26
+     198
+     402
+     555
+
+$ cat output/sim_0.out
+64000302
+38000489
+32000081
+12000582
+46000664
+36000290
+35000839
+22000258
+49000506
+75000310
+----
+
+(For simplicity, we produce a fixed number of values in each bias
+file. Simulations ignore any unneeded bias numbers, or use the last
+bias number repeatedly as needed).
+
+NOTE: As an exercise, modify the example scripts and apps to produce
+the same number of bias values as are needed for each simulation.  As
+a further exercise, modify the script to generate a unique seed value
+for each simulation, which is a common practice in ensemble
+computations.
+
+
 Additional information and references
 -------------------------------------
 

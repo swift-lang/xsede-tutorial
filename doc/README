@@ -756,14 +756,19 @@ computations.
 Example 7: Running MPI applications
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The +p7.swift+ script runs a simple mandelbrot application that generates
-a fractal image. The application takes the resolution of the image, an
-mpi strategy and the number of iterations computed per point in the problem
-space. The swift script itself invokes a wrapper script called +run_mandelbrot+
-which encapsulated the machine to machine differences in how MPI applications
-need to be invoked for multi-node runs. This script in turn executes the mpi
-application +mandelbrot+ that has compiled and setup on the target resources:
-+Stampede+ and +Blacklight+.
+In example +part07+ we use a simple MPI application that generates mandelbrot fractal
+images. We run this application with a range of parameters that determine the level of
+detail in the mandelbrot image to create a sequence of images, which are then stitched
+together to create a montage and a movie.
+
+The application takes the resolution of the image, an mpi strategy and the number of
+iterations computed per point in the problem space. The swift script itself invokes a
+wrapper script +run_mandelbrot+ which encapsulated the machine to machine differences
+in how MPI applications need to be invoked for multi-node runs. This script in turn
+executes the mpi application +mandelbrot+ that has been compiled and setup on the following
+target resources:
+. +Stampede+
+. +Blacklight+
 
 The workflow involves several invocations to the MPI application mandelbrot
 with a range of values for the parameter +iterations+ which determine the number

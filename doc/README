@@ -390,21 +390,28 @@ site.stampede {
 }
 ----
 
-NOTE: To ensure that the site you have selected is used by Swift for the workflow, specify the target site on the swift command line using the +-sites+ option. For eg:
+NOTE: To ensure that the site you have selected is used by Swift for
+the workflow, specify the target site on the swift command line using
+the +-sites+ option. For example:
+
 -----
 swift -sites <SITES> <SWIFT_SCRIPT> <ARGS_TO_SWIFTSCRIPT>
 -----
 
-NOTE: A xref:remote-configuration[Remote site configuration] reference for the sites is
-included towards the end of the tutorial. For the XSEDE tutorial the +swift.conf+ config
-provided in the tutorial folder will be sufficient.
+NOTE: A xref:remote-configuration[Remote site configuration] reference
+for the sites is included towards the end of the tutorial. For the
+XSEDE tutorial the +swift.conf+ config provided in the tutorial folder
+will be sufficient.
 
 Example 4: Running a simple app on a remote resource
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`p4.swift` shows a simple `app` that takes a file containing random numbers and `sorts` them,
-then returns the sorted output. The `part04` folder has a file, `unsorted.txt`, that contains 100 random integers ranging from 0 to 99. We will run the job on a remote resource.
-Be sure that you have configured the `swift.conf` for your target remote site.
+`p4.swift` shows a simple `app` that takes a file containing random
+numbers and `sorts` them, then returns the sorted output. The `part04`
+folder has a file, `unsorted.txt`, that contains 100 random integers
+ranging from 0 to 99. We will run the job on a remote resource.  Be
+sure that you have configured the `swift.conf` for your target remote
+site.
 
 .p4.swift
 
@@ -412,17 +419,29 @@ Be sure that you have configured the `swift.conf` for your target remote site.
 sys::[cat -n ../part04/p4.swift]
 ----
 
-*Line 3-6*: The application +sortdata+ takes a file +unsorted+ and returns a file +out+. It uses the command-line utility +sort+ to return a sorted list of the items given to it.
+*Line 3-6*: The application function +sortdata()+ takes a file (mapped
+to +unsorted+) and returns a file mapped to +out+. It uses the
+command-line utility +sort+ to process the file passed to it.
 
-*Line 8-9*: File variable +sorted+ and +unsorted+ are defined.
+*Line 8-9*: File variables +sorted+ and +unsorted+ are defined and
+mapped to specific files.
 
-*Line 11*: The file +sorted.txt (mapped to the variable +sorted+) will be created and populated with results from the application invocation +sortdata(unsorted)+.
+*Line 11*: The new file +sorted.txt+ (mapped to the variable +sorted+)
+will be created to hold the output of the app invocation
++sortdata(unsorted)+.
 
-When a remote site is set as the execution target for an application (in this case +sort+),
-Swift will connect to it and start swift-workers which in turn will execute tasks. Swift  moves the needed input and output files between the target systems and the machine you are running Swift on. We call this staging.
+When a remote site is selected as the execution target for an
+application (in this case, +sort+), Swift will connect to that site
+(in this case, with +ssh+) and start worker processes which in turn
+will execute Swift app invocation tasks. Swift moves any needed input
+and output files (as declared in the +app+ function interface
+definition) between the target systems and the machine you are running
+Swift on. (We often call this movement of input and output files
+"staging").
 
-Once Swift finishes, you should see a new `sorted.txt` file in the folder. This will contain
-the sorted results.
+When the +swift+ command completes, you should see a new `sorted.txt`
+file in the folder. This contains contains the sorted results (the
+output of the +sort+ command).
 
 For example, to run the job remotely on Stampede and to view the output:
 
@@ -457,20 +476,35 @@ $ more sorted.txt
 
 -----
 
-IMPORTANT: Once the Swift status shows the jobs to be "Submitted", the time-to-completion of
-the jobs can vary based on how busy the queues are on the target resource.
+IMPORTANT: Once the Swift status shows the jobs to be "Submitted", the
+time it will take to complete the jobs can vary greatly based on how
+congested the queues are on the target resource.
 
-TIP: The xref:remote-configuration[Remote configuration] section explains how to check
-the status of your jobs in the queue for systems with PBS, Condor or Slurm schedulers.
+TIP: The xref:remote-configuration[Remote configuration] section
+explains how to check the status of your jobs in the queue for systems
+with PBS, Condor or Slurm schedulers.
 
 Example 5: Running a parallel ensemble on compute resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-`p5.swift` will run our mock "simulation" applications on compute nodes.  The script is
-similar to `p3.swift`, but specifies that each simulation app invocation should additionally
-return the log file that the application writes to `stderr`. In `p3.swift` the apps
-simulation and stats called the binaries stats and simulate which were available on the local
-machine and were present in the system path. The `p5.swift` script
+`p5.swift` will run our mock "simulation" applications on compute
+nodes.  The script is similar to `p3.swift`, but specifies that each
++simulation()+ app invocation should additionally return the log file
+that the application writes to `stderr`.
+
+In `p3.swift` the apps +simulation()+ and +stats()+ called the
+excutable programs +stats+ and +simulate+ which were available on the
+local machine and were present in the system path. The `p5.swift`
+script instead passes the executables programs as additional file
+arguments on the app invocation, to make them available on the remote
+compute node.
+
+In this case, these "apps" are in fact trivial shell scripts. In more
+realistic and hence complex cases, Swift can run apps that are
+pre-installed on the remote machine, as we did with +sort+ in example
+4.  Swift can also install a new app on a site or compute node the
+first time that an app needs to run on a remote location, using its
++softImage+ feature (described in the Swift User Guide).
 
 ----
 app (file out, file log) simulation (int sim_steps, int sim_range, int sim_values, file sim_script)
@@ -487,10 +521,18 @@ image::./images/part05.jpg[align="center"]
 sys::[cat -n ../part05/p5.swift]
 ----
 
-*Line 3-6*: The application +simulation+ has been modified to take the simulation script as an argument through the file variable +sim_script+ and to return a log file which contains output on the stderr stream from the application. Instead of calling the application +simulation+ the command line string now calls +bash+
+*Line 3-6*: The application +simulation()+ has been modified to take
+the simulation script as an argument through the file variable
++sim_script+ and to return a log file which contains output on the
++stderr+ stream from the application. Instead of calling the
+application +simulation+ the command line string now calls +bash+,
+which in turns runs the simulation script. (Note that in our example
+codes, +simulate+ is just a symbolic link alias for +simulate.sh+).
 
-*Line 8-11*: The application +analyze+ has been modified to return a log file which contains output on the stderr stream from the application.
-
+*Line 8-11*: The application +analyze()+ has been modified to return a
+log file which contains output on the stderr stream from the
+application.  You can use this log file to verify where the remote
+application ran, by using +grep+ to search for "hostname".
 
 To run:
 
@@ -527,10 +569,13 @@ Running on node: nid00116
 Performing larger Swift runs
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-To run larger tests, two changes that are required. The first is a change to the command
-line arguments. The example below will run 100 simulations with each simulation taking 5
-seconds. The second change, is to increase the resource limits specified in the +swift.conf+.
-For example, increasing the number of nodes requested, the tasks requested per node etc.
+To run larger tests, two changes are required. The first is a change
+to the command line arguments. The example below will run 100
+simulations (+-nsim=100+) with each simulation taking 5 seconds
+(+-steps=5+). The second change increase the resource limits specified
+in the +swift.conf+ file (for example, increasing the number of nodes
+requested, the number of tasks to be run concurrently on each compute
+node, etc.)
 
 -----
 # You can increase maxJobs or tasksPerNode to increase the resources available to Swift
@@ -584,11 +629,17 @@ Final status: Thu, 22 Jan 2015 17:33:02-0600  Finished successfully:101
 Example 6: Specifying more complex workflow patterns
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-p6.swift expands the workflow pattern of p5.swift to add additional stages to the workflow.
-Here, we generate a dynamic seed value that will be used by all of the simulations, and for
-each simulation, we run a pre-processing application to generate a unique "bias file".
-The bias files contains “biases,” which are added to the random numbers generated in simulate.
-This pattern is shown below, followed by the Swift script.
+The +p6.swift+ script expands the workflow pattern of +p5.swift+ to
+add additional stages to the workflow.  This example illustrates how
+to specify the common scientific workflow pattern of running a
+"preparation" program for each unique simulation.
+
+Here, we generate a dynamic random number "seed" value that will be
+used by all of the simulations, and for each simulation, we run a
+pre-processing application to generate a unique "bias file" for that
+simulation.  The bias files contains new random numbers which are
+added to the random numbers generated in +simulate+. The new workflow
+pattern is shown below, followed by the Swift script.
 
 image::./images/part06.jpg[align="center"]
 
@@ -597,12 +648,11 @@ image::./images/part06.jpg[align="center"]
 sys::[cat -n ../part06/p6.swift]
 ----
 
-Note that the workflow is based on data flow dependencies: each simulation depends on the seed value, calculated in this statement:
------
-seedfile = genseed(1);
------
-
-and on the bias file, computed and then consumed in these two dependent statements:
+Note that the workflow execution pattern is driven by data flow
+dependencies. Each simulation depends on the seed value, calculated in
+line 42 ( +seedfile = genseed(1,simulate_script)+ ) and on the bias
+file, computed and then consumed in these two dependent statements at
+lines 50-51:
 
 -----
   biasfile = genbias(1000, 20, simulate_script);
@@ -679,11 +729,15 @@ $ cat output/sim_0.out
 75000310
 ----
 
-We produce 20 values in each bias file. Simulations of less than that 20 values ignore the
-unneeded bias numbers, while simulations of more than 20 will use the last bias number for
-all remaining values past 20.
+(For simplicity, we produce a fixed number of values in each bias
+file. Simulations ignore any unneeded bias numbers, or use the last
+bias number repeatedly as needed).
 
-NOTE: As an exercise, adjust the code to produce the same number of bias values as are needed for each simulation.  As a further exercise, modify the script to generate a unique seed value for each simulation, which is a common practice in ensemble computations.
+NOTE: As an exercise, modify the example scripts and apps to produce
+the same number of bias values as are needed for each simulation.  As
+a further exercise, modify the script to generate a unique seed value
+for each simulation, which is a common practice in ensemble
+computations.
 
 Additional information and references
 -------------------------------------

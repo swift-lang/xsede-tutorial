@@ -1019,9 +1019,9 @@ qstat -u $USER
 Gordon SDSC (XSEDE)
 ^^^^^^^^^^^^^^^^^^^
 
-Gordon is a dedicated XSEDE cluster designed by Appro and SDSC consisting of 1024 compute nodes and 64 I/O nodes.
-Here is some additional documentation on Gordon:
-link:http://www.sdsc.edu/us/resources/gordon/[Gordon User Guide]
+Gordon is an XSEDE cluster at SDSC with 1024 16-core compute nodes and 64 I/O nodes.
+Detailed documentation can be found in the
+link:http://www.sdsc.edu/support/user_guides/gordon.html[Gordon User Guide].
 
 WARNING: The swift client cannot run on the gordon login nodes due to memory limits on the machine. Swift must
 be run from a remote location.

@@ -142,7 +142,7 @@ To run this script, run the following command:
 -----
 $ cd swift-tutorial/part01
 $ swift p1.swift
-Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
+Swift 0.96.2 git-rev: 6390483cc61035700e7278ae1a888f27b3bded2b heads/release-0.96-swift 6286
 RunID: run001
 Progress: Thu, 22 Jan 2015 16:21:51-0600
 Progress: Thu, 22 Jan 2015 16:21:52-0600  Active:1
@@ -206,7 +206,7 @@ To run the script and view the output:
 -----
 $ cd swift-tutorial/part02
 $ swift p2.swift
-Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
+Swift 0.96.2 git-rev: 6390483cc61035700e7278ae1a888f27b3bded2b heads/release-0.96-swift 6286
 RunID: run001
 Progress: Thu, 22 Jan 2015 16:24:07-0600
 Progress: Thu, 22 Jan 2015 16:24:08-0600  Active:10
@@ -279,7 +279,7 @@ To run:
 ----
 $ cd swift-tutorial/part03
 $ swift p3.swift
-Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
+Swift 0.96.2 git-rev: 6390483cc61035700e7278ae1a888f27b3bded2b heads/release-0.96-swift 6286
 RunID: run001
 Progress: Thu, 22 Jan 2015 16:27:23-0600
 Progress: Thu, 22 Jan 2015 16:27:24-0600  Active:10
@@ -324,7 +324,7 @@ For example, try running the +swift+ command with `-nsim=100` and
 
 -----
 $ swift p3.swift -nsim=100 -steps=1
-Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
+Swift 0.96.2 git-rev: 6390483cc61035700e7278ae1a888f27b3bded2b heads/release-0.96-swift 6286
 RunID: run002
 Progress: Thu, 22 Jan 2015 16:29:45-0600
 Progress: Thu, 22 Jan 2015 16:29:46-0600  Selecting site:80  Active:20
@@ -451,7 +451,7 @@ For example, to run the job remotely on Stampede and to view the output:
 -----
 $ cd swift-tutorial/part04
 $ swift -sites stampede p4.swift
-Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
+Swift 0.96.2 git-rev: 6390483cc61035700e7278ae1a888f27b3bded2b heads/release-0.96-swift 6286
 RunID: run001
 Progress: Thu, 22 Jan 2015 17:09:43-0600
 Progress: Thu, 22 Jan 2015 17:09:44-0600  Submitting:1
@@ -552,7 +552,7 @@ To run:
 ----
 $ cd swift-tutorial/part05
 $ swift -sites <SITES> p5.swift
-Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
+Swift 0.96.2 git-rev: 6390483cc61035700e7278ae1a888f27b3bded2b heads/release-0.96-swift 6286
 RunID: run001
 Progress: Thu, 22 Jan 2015 17:15:01-0600
 Progress: Thu, 22 Jan 2015 17:15:02-0600  Submitting:10
@@ -594,7 +594,7 @@ node, etc.)
 # You can increase maxJobs or tasksPerNode to increase the resources available to Swift
 # With the default swift.conf, the following will be processed 4 tasks at a time :
 $ swift p5.swift -steps=5 -nsim=100
-Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
+Swift 0.96.2 git-rev: 6390483cc61035700e7278ae1a888f27b3bded2b heads/release-0.96-swift 6286
 RunID: run001
 Progress: Thu, 22 Jan 2015 17:35:01-0600
 Progress: Thu, 22 Jan 2015 17:35:02-0600  Submitting:100
@@ -616,7 +616,7 @@ Final status: Thu, 22 Jan 2015 17:46:53-0600  Finished successfully:101
 # maxJobs       : 2      # Increased from 1
 # tasksPerNode  : 15     # Increased from 4
 $ swift p5.swift -steps=5 -nsim=100
-Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
+Swift 0.96.2 git-rev: 6390483cc61035700e7278ae1a888f27b3bded2b heads/release-0.96-swift 6286
 RunID: run002
 Progress: Thu, 22 Jan 2015 17:30:35-0600
 Progress: Thu, 22 Jan 2015 17:30:36-0600  Submitting:100
@@ -677,7 +677,7 @@ To run:
 ----
 $ cd swift-tutorial/part06
 $ swift p6.swift
-Swift 0.96.1 git-rev: cdfedcd001993aee741777502c3367cb7da24b10 heads/release-0.96-swift 6281
+Swift 0.96.2 git-rev: 6390483cc61035700e7278ae1a888f27b3bded2b heads/release-0.96-swift 6286
 RunID: run001
 Progress: Thu, 22 Jan 2015 17:54:47-0600
 

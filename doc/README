@@ -756,51 +756,62 @@ computations.
 Example 7: Running MPI applications
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In example +part07+ we use a simple MPI application that generates mandelbrot fractal
-images. We run this application with a range of parameters that determine the level of
-detail in the mandelbrot image to create a sequence of images, which are then stitched
-together to create a montage and a movie.
+In example +part07+ we use a simple MPI Mandelbrot application that
+generates fractal images. We run this application with a range of
+parameters that determine the level of detail in the mandelbrot image,
+and create a sequence of images, which are then stitched together to
+create a montage and a movie to show the impact of the parameter
+values on the geometry.
 
-The application takes the resolution of the image, an mpi strategy and the number of
-iterations computed per point in the problem space. The swift script itself invokes a
-wrapper script +run_mandelbrot+ which encapsulated the machine to machine differences
-in how MPI applications need to be invoked for multi-node runs. This script in turn
-executes the mpi application +mandelbrot+ that has been compiled and setup on the following
-target resources:
-. +Stampede+
-. +Blacklight+
+The application takes the resolution of the image, an mpi strategy and
+the number of iterations computed per point in the problem space. The
+swift script itself invokes a wrapper script +run_mandelbrot+ which
+encapsulated the site-specific differences in how MPI applications
+need to be invoked for multi-node program invocations. This script in
+turn executes the MPI application +mandelbrot+ that has been compiled
+and installed on the +Stampede+ and +Blacklight+ sites.
 
-The workflow involves several invocations to the MPI application mandelbrot
-with a range of values for the parameter +iterations+ which determine the number
-of iterations per point in problem space. The higher the number of iterations the
-higher the detail in the mandelbrot fractal generated. The +foreach+ loop describes
-the parameter sweep.
+The workflow invokes the MPI application +mandelbrot+ across a range
+of values for the parameter +iterations+, which determine the number
+of iterations per point in fractal space. The higher the number of
+iterations, the higher the degree of detail in the generated
+Mandelbrot fractal image. The +foreach+ loop describes the parameter
+sweep. 
 
-The results generated from the the +mandelbrot+ application and assembled by the application
-+assemble+. At the end of each invocation of the +mandelbrot+ application the generated
-image files are staged back to the local machine. The +assemble+ step involves stitching
-these results into a gif file +output/mandel.gif+ and a montage image +output/montage.jpg+
-which does not benefit from running on a 16 core compute node. As a result the +assemble+
-application is only defined for the site +localhost+ in the swift.conf+, which ensures that
-the +assemble+ application runs on the local machine.
+The results generated from the the +mandelbrot+ application are
+assembled by the application +assemble+. At the end of each invocation
+of the +mandelbrot+ application, the generated image files are staged
+back to the local machine. The +assemble+ step stitches these results
+into a "movie" file +output/mandel.gif+ and a montage image
++output/montage.jpg+. This processing is done on the site +localhost+,
+as it does not benefit from running on a 16-core compute node. Hence
+the +assemble+ application is only defined for the site +localhost+ in
+the +swift.conf+, which ensures that the +assemble+ application runs
+only on the local machine.
 
+Currently, for running MPI applications, each Swift worker manages one
+parallel job resource/site job at a time, and can run one MPI job at a
+time. Multiple MPI applications can be invoked, one at a time, within
+the same resource job. If enough resources were available, multiple
+MPI jobs could be invoked in parallel using multiple jobs on the site.
 
 .p7.swift
 ----
 sys::[cat -n ../part07/p7.swift]
 ----
 
-
 NOTE: Source the +mpi_setup.sh+ script in the part07 folder before running the swift scripts.
-    -----
-    cd swift-tutorial/part07
-    source mpi_setup.sh
-    -----
+-----
+cd swift-tutorial/part07
+source mpi_setup.sh
+-----
 
 To run:
 
 ----
 $ cd swift-tutorial/part07
+
+$ source mpi_setup.sh  # Dont forget to do this, once!
 
 $ swift -sites blacklight,localhost p7.swift
 Swift 0.96.2 git-rev: 6390483cc61035700e7278ae1a888f27b3bded2b heads/release-0.96-swift 6286
@@ -821,26 +832,47 @@ Progress: Sun, 26 Jul 2015 18:30:36-0400  Active:1  Finished successfully:3
 Progress: Sun, 26 Jul 2015 18:30:58-0400  Stage out:1  Finished successfully:3
 Progress: Sun, 26 Jul 2015 18:30:59-0400  Active:1  Finished successfully:4
 Final status: Sun, 26 Jul 2015 18:31:02-0400  Finished successfully:5
+----
 
-# which produces the following output:
+This produces the following output:
+----
 $ ls output/
 assemble.err  mandel_0005.err  mandel_0005.out  mandel_0010.jpg  mandel_0015.err  mandel_0015.out  mandel_0020.jpg  mandel.gif
 assemble.out  mandel_0005.jpg  mandel_0010.err  mandel_0010.out  mandel_0015.jpg  mandel_0020.err  mandel_0020.out  montage.jpg
-
-# The mandel_NNNN.out and mandel_NNNN.err are the stdout and stderr from the mandelbrot mpi respectively
-# mandel_NNNN.jpg is the fractal image generated by each invocation of the application
-# The mandel.gif is the gif movie generated, while the montage.jpg is a montage of the generated images.
-
-# To see the images, start the webserver application included :
-$ webserver
-
-# As the webserver starts, it prints a PORT number in its output,
-# for this tutorial this number should be 600<TRAIN_ID>, where
-# TRAIN_ID is the last two digits of your username.
-# To see the output go to the following URLs on your browser:
-http://workflow.iu.xsede.org:60001/output/montage.jpg
-http://workflow.iu.xsede.org:60001/output/mandel.gif
 ----
+
+The files +mandel_NNNN.out+ and +mandel_NNNN.err+ are the +stdout+ and
++stderr+ from the +mandelbrot+ MPI app.  +mandel_NNNN.jpg+ is the
+fractal image generated by each invocation of the application.  The
+file +mandel.gif+ is the animated GIF movie generated, and
++montage.jpg+ is a montage of the generated images.
+
+To see the images, start the +webserver+ application, which is
+provided in the +part07/bin+ directory and included in your +PATH+ by
++mpi_setup.sh+:
+----
+$ webserver
+----
+
+As the webserver starts, it prints the port number that it will listen
+on.  For this tutorial, the port number should be 60000 plus your
+"train" login number (the last two digits of your username. I.e., if
+you are using +train23+, your webserver will listen on port 60023.
+
+To see the output go to the following URLs on your browser, being sure
+to replace the "NN" in 600NN with your training username number.  For
+example:
+----
+http://workflow.iu.xsede.org:60023/output/montage.jpg
+http://workflow.iu.xsede.org:60023/output/mandel.gif
+----
+
+This concludes the XSEDE tutorial.  Please look for further
+information on Swift at http://swift-lang.org, and join the community
+via the email lists at http://swift-lang.org/support.
+
+We thank you for your time and interest, and welcome your suggestions
+for improvements to this tutorial and to Swift!
 
 Additional information and references
 -------------------------------------

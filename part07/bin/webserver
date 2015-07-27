@@ -1,20 +1,19 @@
 #!/bin/bash
 
-
 if [[ $USER == *train* ]]
 then
     PORT=600${USER#train}
 else
     if (( "$#" < "1" ))
     then
-	    echo "ERROR: Missing required argument <PORT>" >&1
-	    echo "Usage: webserver <PORT 50000-65000>"
-	    exit -1
+        echo "ERROR: Missing required argument <PORT>" >&1
+        echo "Usage: webserver <PORT 50000-65000>"
+        exit -1
+    else:
+        # Override port if commandline arg is provided
+        PORT=$1
     fi
 fi
-
-# Override port if commandline arg is provided
-PORT=$1
 
 python -m "SimpleHTTPServer" $PORT &> webserver.log &
 echo "Started webserver on port $PORT"

@@ -791,10 +791,17 @@ sys::[cat -n ../part07/p7.swift]
 ----
 
 
+NOTE: Source the +setup.sh+ script in the part07 folder before running the swift scripts.
+    -----
+    cd swift-tutorial/part07
+    source setup.sh
+    -----
+
 To run:
 
 ----
 $ cd swift-tutorial/part07
+
 $ swift -sites blacklight,localhost p7.swift
 Swift 0.96.2 git-rev: 6390483cc61035700e7278ae1a888f27b3bded2b heads/release-0.96-swift 6286
 RunID: run001

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOG=$HOME/ssh.log
+LOG=$HOME/.ssh.log
 echo "ARGS SCP: $*"  &>> $LOG
 shift; # Avoid -p
 shift; # Avoid 22

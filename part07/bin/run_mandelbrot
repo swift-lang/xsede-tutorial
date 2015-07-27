@@ -41,5 +41,5 @@ then
 else
     echo "MACHINE : $MACHINE is not defined"
 fi
-
+ls -thor $outputfile
 convert $outputfile -resize 1000x1000 $outputfile

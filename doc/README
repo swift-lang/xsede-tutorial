@@ -791,10 +791,10 @@ sys::[cat -n ../part07/p7.swift]
 ----
 
 
-NOTE: Source the +setup.sh+ script in the part07 folder before running the swift scripts.
+NOTE: Source the +mpi_setup.sh+ script in the part07 folder before running the swift scripts.
     -----
     cd swift-tutorial/part07
-    source setup.sh
+    source mpi_setup.sh
     -----
 
 To run:

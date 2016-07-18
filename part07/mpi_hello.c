@@ -15,10 +15,10 @@ int main(int argc, char **argv)
     char processor_name[MPI_MAX_PROCESSOR_NAME];
 
     MPI_Init(&argc, &argv);
-    fprintf(stdout, "argc=%d\n", argc);
     if(argc==2) {
       sleep(atoi(argv[1]));
     }
+
     stat = MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
     if ( stat != 0 ) error ("MPI_Comm_size returned an error code : %d", stat);
 

@@ -1,0 +1,33 @@
+#! /bin/bash
+
+sbatch -J bswift -o bswift.%j.out -p shared --nodes=1 --ntasks-per-node=8 --mem=5G --export=ALL -t 00:10:00 <<END
+#! /bin/bash
+
+echo $0: Started at $(date)
+echo $0: Running in dir $PWD
+echo $0: Running on host $(hostname)
+
+swift $*
+
+echo $0: Swift script submitted
+
+END
+
+# For reference:
+
+cat >/dev/null <<END
+
+#SBATCH -p shared
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=8
+#SBATCH --mem=40G
+#SBATCH -t 01:00:00
+#SBATCH -J HPL.8
+#SBATCH -o HPL.8.%j.%N.out
+#SBATCH -e HPL.8.%j.%N.err
+#SBATCH --export=ALL
+
+export MV2_SHOW_CPU_BINDING=1
+ibrun -np 8 ./xhpl.exe
+
+END

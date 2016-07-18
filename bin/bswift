@@ -1,0 +1,19 @@
+#! /bin/bash
+
+sbatch -J bswift -o bswift.%j.out -p shared --nodes=1 --ntasks-per-node=8 --mem=5G --export=ALL -t 00:30:00 <<END
+#! /bin/bash
+
+echo bswift: $0 Submitted at $(date)
+echo -d "bswift: Started at "
+date
+echo -n "bswift: Running in dir "
+pwd
+echo -n "bswift: Running on host "
+hostname
+
+swift $*
+
+echo -n "bswift: swift command completed at: "
+date
+
+END

@@ -1,0 +1,14 @@
+#! /bin/bash
+#SBATCH -p shared
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=8
+#SBATCH --mem=1G
+#SBATCH -t 00:10:00
+#SBATCH -J mpi_hello
+#SBATCH -o mpi_hello.%j.out
+#SBATCH --export=ALL
+
+#export MV2_SHOW_CPU_BINDING=1
+date
+ibrun -np 4 ./mpi_hello 5
+date

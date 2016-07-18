@@ -31,22 +31,28 @@ else
   echo Assuming $TUTDIR/bin:$TUTDIR/app: is already at front of PATH
 fi
 
-if [ -d /usr/local/bin/swift-trunk ] && [ -d /usr/local/bin/jdk1.7.0_51 ]
-then
-    export JAVA=/usr/local/bin/jdk1.7.0_51/bin
-    export SWIFT=/usr/local/bin/swift-trunk/bin
-    export PATH=$JAVA:$SWIFT:$PATH
-fi
+if hostname | grep comet; then
 
-if [ -d /opt/swift/swift-0.96.2 ] && [ -d /opt/swift/jdk1.7.0_51 ]
-then
-    export SWIFT=/opt/swift/swift-0.96.2/bin
-    export JAVA=/opt/swift/jdk1.7.0_51/bin
-    export PATH=$SWIFT:$JAVA:$PATH
+    JAVA=/oasis/scratch/comet/xdtr1/temp_project/jdk1.8.0_91/bin
+    SWIFT=/oasis/scratch/comet/xdtr1/temp_project/swift/swift-0.96.2/bin
+    PATH=$SWIFT:$JAVA:$PATH
+
+elif hostname | grep workflow.iu; then
+
+    SWIFT=/opt/swift/swift-0.96.2/bin
+    JAVA=$(echo /opt/swift/jdk1.*/bin)
+    PATH=$SWIFT:$JAVA:$PATH
     export X509_USER_PROXY=/tmp/x509.$USER.$RANDOM
-fi
 
-echo Swift version is $(swift -version)
+elif [ -d /usr/local/bin/swift-trunk ] && [ -d /usr/local/bin/jdk1.7.0_51 ]; then
+
+    JAVA=/usr/local/bin/jdk1.7.0_51/bin
+    SWIFT=/usr/local/bin/swift-trunk/bin
+    PATH=$JAVA:$SWIFT:$PATH
+
+fi
+echo -n "Swift version is "
+MALLOC_ARENA_MAX=1 SWIFT_HEAP_MAX=128M swift -version
 
 return
 

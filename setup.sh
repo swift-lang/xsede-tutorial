@@ -33,7 +33,7 @@ fi
 
 if hostname | grep comet; then
 
-    JAVA==/oasis/scratch/comet/xdtr1/temp_project/jdk1.8.0_91/bin
+    JAVA=/oasis/scratch/comet/xdtr1/temp_project/jdk1.8.0_91/bin
     SWIFT=/oasis/scratch/comet/xdtr1/temp_project/swift/swift-0.96.2/bin
     PATH=$SWIFT:$JAVA:$PATH
 

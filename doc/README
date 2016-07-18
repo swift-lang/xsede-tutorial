@@ -359,12 +359,10 @@ file when it runs.
 
 Examples 4-6 are designed to run on remote sites, so they require the configuration to
 be set in the swift.conf. The supplied +swift.conf+ config file, define several sites, and in
-this tutorial, we will focus on the following sites:
+this tutorial, we use the following sites:
 
-- *Blacklight at PSC*
-- *Gordon at SDSC*
 - *Stampede at TACC*
-
+- *Comet at SDSC*
 
 To configure the definition for a particular site, open the swift-tutorial/swift.conf file and edit the site entry for that site. For example, if you want to run the tutorial on the Stampede cluster, edit the site.stampede entry in the swift-tutorial/swift.conf file and follow the instructions given for stampede in the config file.
 
@@ -440,12 +438,11 @@ will be created to hold the output of the app invocation
 
 When a remote site is selected as the execution target for an
 application (in this case, +sort+), Swift will connect to that site
-(in this case, with +ssh+) and start worker processes which in turn
-will execute Swift app invocation tasks. Swift moves any needed input
-and output files (as declared in the +app+ function interface
-definition) between the target systems and the machine you are running
-Swift on. (We often call this movement of input and output files
-"staging").
+(in this case, with +ssh+) and start a service that submits worker
+processes which in turn will execute Swift app invocation tasks. Swift
+moves (or "stages") any needed input and output files (as declared in the +app+
+function interface definition) between the target systems and the
+machine you are running Swift on.
 
 When the +swift+ command completes, you should see a new `sorted.txt`
 file in the folder. This contains contains the sorted results (the
@@ -498,7 +495,103 @@ your jobs in the queue for systems with PBS, Condor or Slurm
 schedulers._
 
 
+Example 4b: Running on Comet
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+The SDSC Comet and Gordon systems put tight memory restrictions on
+commands that are run on their login hosts. This prevents Swift from
+running its remote job-launching server (a Java application) on those
+systems.
+
+For such systems we provide a simple example of a wrapper script
+`bswift` which runs the swift command on a compute node (in this case
+using the faster turnaround `shared` partition). The swift command
+then submits pilot worker jobs to the Comet `compute` partition to run
+the application tasks of your Swift script.
+
+----
+$ gsissh comet
+
+$ tar zxf /oasis/scratch/comet/xdtr1/temp_project/swift/swift-tutorial.tgz
+
+$ cd swift-tutorial
+$ source setup.sh
+Swift version is Swift 0.96.2 git-rev: b9611649002eecd640fc6c58bbb88cb35ce03539 heads/release-0.96-swift 6287
+
+$ cd part04
+$ bswift -sites comet p4.swift
+----
+
+`bswift` prints the id of batch job that it submits to the shared
+queue, and passes its arguments to the swift command in that batch
+job. The stdout/err of this batch job (including the swift command
+output) is written to `bswift.JOBNUMBER.out`.  Here's a sample
+`bswift` session:
+
+----
+comet$ ls
+p4.swift  swift.conf  unsorted.txt
+
+comet$ bswift -sites comet p4.swift
+Submitted batch job 3460317
+
+comet$ squeue -u $USER
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           3460317    shared   bswift    xdtr1  R       0:02      1 comet-03-14
+
+comet$ squeue -u $USER
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           3460320   compute B0718-45    xdtr1 PD       0:00      1 (None)
+           3460317    shared   bswift    xdtr1  R       0:10      1 comet-03-14
+
+comet$ ls
+p4.swift  swift.conf  unsorted.txt
+
+comet$ ls
+bswift.3460317.out  p4.kml  p4.swift  p4.swiftx  run001  swift.conf  unsorted.txt
+
+comet$ cat bswift.3460317.out 
+bswift: /home/xdtr1/swift-tutorial/bin/bswift Submitted at Mon Jul 18 04:45:08 PDT 2016
+-d bswift: Started at 
+Mon Jul 18 04:45:19 PDT 2016
+bswift: Running in dir /home/xdtr1/swift-tutorial/part04
+bswift: Running on host comet-03-14.sdsc.edu
+Swift 0.96.2 git-rev: b9611649002eecd640fc6c58bbb88cb35ce03539 heads/release-0.96-swift 6287
+RunID: run001
+Progress: Mon, 18 Jul 2016 04:45:23-0700
+Progress: Mon, 18 Jul 2016 04:45:24-0700  Submitted:1
+
+comet$ squeue -u $USER
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           3460317    shared   bswift    xdtr1  R       1:01      1 comet-03-14
+           3460320   compute B0718-45    xdtr1  R       0:01      1 comet-14-32
+
+comet$ squeue -u $USER
+             JOBID PARTITION     NAME     USER ST       TIME  NODES NODELIST(REASON)
+           3460320   compute B0718-45    xdtr1 CG       0:01      1 comet-14-32
+
+comet$ cat bswift.3460317.out 
+bswift: /home/xdtr1/swift-tutorial/bin/bswift Submitted at Mon Jul 18 04:45:08 PDT 2016
+-d bswift: Started at 
+Mon Jul 18 04:45:19 PDT 2016
+bswift: Running in dir /home/xdtr1/swift-tutorial/part04
+bswift: Running on host comet-03-14.sdsc.edu
+Swift 0.96.2 git-rev: b9611649002eecd640fc6c58bbb88cb35ce03539 heads/release-0.96-swift 6287
+RunID: run001
+Progress: Mon, 18 Jul 2016 04:45:23-0700
+Progress: Mon, 18 Jul 2016 04:45:24-0700  Submitted:1
+Progress: Mon, 18 Jul 2016 04:45:54-0700  Submitted:1
+Final status: Mon, 18 Jul 2016 04:46:19-0700  Finished successfully:1
+bswift: swift command completed at: Mon Jul 18 04:46:20 PDT 2016
+
+comet$ head sorted.txt
+0
+1
+2
+...
+9
+comet$
+----
 
 Example 5: Running a parallel ensemble on compute resources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

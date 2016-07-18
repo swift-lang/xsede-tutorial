@@ -23,8 +23,8 @@ log() {
   printf "Running on node: "; /bin/hostname
   printf "Node IP address: "; /bin/hostname -I
   printparams
-  printf "\nEnvironment:\n\n"
-  printenv | sort
+  printf "\nSelected Environment Variables:\n\n"
+  printenv | egrep '^HOME|^HOSTNAME|^PWD|^USER|^LOGNAME|^LD_LIB|^PATH|^SCRATCH|^WORK|^TMPDIR|^WORKER|^SWIFT' | sort
 }
 
 addsims() {

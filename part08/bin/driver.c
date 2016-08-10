@@ -19,7 +19,7 @@ int Y_MAX = 10000;
 
 int dump_mandelbrot(char *buffer, char *filename)
 {
-    char ppm_to_jpg[1000];
+    // char ppm_to_jpg[1000];
     FILE * fp = fopen(filename, "w");
     fprintf(fp, "P6\n# CREATOR: Yadu Nand / mandel program\n");
     fprintf(fp, "%d %d\n255\n",X_MAX,Y_MAX);
@@ -97,14 +97,14 @@ int predef_run_client(int myrank, int nprocs, int strategy, int itermax)
 
 int master(int myrank, int nprocs, int strategy, int itermax, char *output_filename)
 {
-    int i, offset, slice_size;
+  int i, offset; // , slice_size;
     MPI_Status stat;
 
     int task_descriptor[4] = {0,0,0,0};
     char * buffer = malloc(X_MAX * Y_MAX * 3 * sizeof(char));
     //char * request = malloc(10*sizeof(char));
     // Slices are in multiples on rows.
-    slice_size = SLICE_SIZE;
+    // slice_size = SLICE_SIZE;
 
     // In this world slaves ask for work! and there is work to do
     for ( i = 0 ; i < Y_MAX - SLICE_SIZE ; i+=SLICE_SIZE ) {

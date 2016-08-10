@@ -1,0 +1,13 @@
+#!/bin/bash
+
+
+MPI_RANKS=$1
+MPI_APP_PATH=$2
+shift 2
+outputfile="${@: -1}"
+
+mpirun -np $MPI_RANKS $MPI_APP_PATH $*
+
+# ls -thor $outputfile
+
+convert $outputfile -resize 1000x1000 $outputfile

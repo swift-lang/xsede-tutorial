@@ -1,5 +1,5 @@
 #! /bin/bash
-#SBATCH -p shared
+#SBATCH -p RM
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=8
 #SBATCH --mem=1G
@@ -9,6 +9,8 @@
 #SBATCH --export=ALL
 
 #export MV2_SHOW_CPU_BINDING=1
+hostname
 date
-ibrun -np 4 ./mpi_hello 5
+#ibrun -np 4 ./mpi_hello 5
+sh -c "mpirun -np 4 /home/wilde/xsede-tutorial/part07/mpi_hello.gcc_mvapich 1"
 date

@@ -9,7 +9,7 @@ else
         echo "ERROR: Missing required argument <PORT>" >&1
         echo "Usage: webserver <PORT 50000-65000>"
         exit -1
-    else:
+    else
         # Override port if commandline arg is provided
         PORT=$1
     fi

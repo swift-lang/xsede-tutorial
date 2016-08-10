@@ -7,7 +7,7 @@ SRC = $(wildcard *.c)
 DEPS = 
 OBJS = $(SRC:.c=.o)
 
-EXEC=mpi_hello
+EXEC = hipi
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)

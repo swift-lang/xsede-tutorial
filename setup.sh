@@ -41,8 +41,8 @@ if hostname | grep bridges; then
     PATH=$SWIFT/bin:$JAVA:$PATH
 
     module unload mpi/intel_mpi
-    module   load mpi/gcc_mvapich
-
+    module load mpi/gcc_mvapich
+    export CC="mpicc"
     echo "modules adjusted: unloaded mpi/intel_mpi; loaded mpi/gcc_mvapich"
     echo "This list should should show mpi/gcc_mvapich as only MPI:"
     module list

@@ -15,13 +15,14 @@ export CLOUD_HEADNODE="http://HEADNODE_ADDRESS:50010"
 
 
 # ensure that this script is being sourced
+
 if [ ${BASH_VERSINFO[0]} -gt 2 -a "${BASH_SOURCE[0]}" = "${0}" ] ; then
   echo ERROR: script ${BASH_SOURCE[0]} must be executed as: source ${BASH_SOURCE[0]}
   exit 1
 fi
 
+# Setting tutorial bin/ and app/ folders to PATH
 
-# Setting scripts folder to the PATH env var.
 TUTDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ _$(which cleanup 2>/dev/null) != _$TUTDIR/bin/cleanup ]; then
@@ -31,7 +32,15 @@ else
   echo Assuming $TUTDIR/bin:$TUTDIR/app: is already at front of PATH
 fi
 
-if hostname | grep comet; then
+# Set PATH for specific hosts
+
+if hostname | grep bridges; then
+
+    module load java # Get Oracle Java 1.8.x
+    SWIFT=/home/wilde/swift/rev/swift-0.96.2
+    PATH=$SWIFT/bin:$JAVA:$PATH
+
+elif hostname | grep comet; then
 
     JAVA=/oasis/scratch/comet/xdtr1/temp_project/jdk1.8.0_91/bin
     SWIFT=/oasis/scratch/comet/xdtr1/temp_project/swift/swift-0.96.2/bin
@@ -51,8 +60,8 @@ elif [ -d /usr/local/bin/swift-trunk ] && [ -d /usr/local/bin/jdk1.7.0_51 ]; the
     PATH=$JAVA:$SWIFT:$PATH
 
 fi
-echo -n "Swift version is "
-MALLOC_ARENA_MAX=1 SWIFT_HEAP_MAX=128M swift -version
+echo -"Swift version is $(swift -version)"
+
+#MALLOC_ARENA_MAX=1 SWIFT_HEAP_MAX=128M swift -version
 
 return
-

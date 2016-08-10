@@ -40,6 +40,13 @@ if hostname | grep bridges; then
     SWIFT=/home/wilde/swift/rev/swift-0.96.2
     PATH=$SWIFT/bin:$JAVA:$PATH
 
+    module unload mpi/intel_mpi
+    module   load mpi/gcc_mvapich
+
+    echo "modules adjusted: unloaded mpi/intel_mpi; loaded mpi/gcc_mvapich"
+    echo "This list should should show mpi/gcc_mvapich as only MPI:"
+    module list
+
 elif hostname | grep comet; then
 
     JAVA=/oasis/scratch/comet/xdtr1/temp_project/jdk1.8.0_91/bin

@@ -32,7 +32,7 @@ do
     popd
 done
 
-SITES=('stampede' 'gordon' 'blacklight')
+SITES=('bluewaters')
 for i in $(seq 4 1 6)
 do
     pushd .

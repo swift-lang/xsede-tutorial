@@ -47,6 +47,16 @@ if hostname | grep bridges; then
     echo "This list should should show mpi/gcc_mvapich as only MPI:"
     module list
 
+elif hostname -f | grep "ncsa.illinois.edu" ; then
+    # BW does not have a clearly identifiable hostname on the login nodes
+    
+    module load java # Oracle java java/jdk1.8.0_51
+    module unload PrgEnv-cray/5.2.82
+    module load PrgEnv-gnu/5.2.82    
+    SWIFT=~wilde/scratch/swift/rev/swift-0.96.2
+    PATH=$SWIFT/bin:$PATH
+    export CC="cc"
+
 elif hostname | grep comet; then
 
     JAVA=/oasis/scratch/comet/xdtr1/temp_project/jdk1.8.0_91/bin
